@@ -1,12 +1,20 @@
-# React + Vite
+# SpendWise - Expense Tracker  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SpendWise is a modern expense tracking app that helps users manage their finances efficiently. With SpendWise, users can log their daily expenses, and filter expenses by date and category. The app provides insightful analytics, allowing users to track their spending habits over time.  
 
-Currently, two official plugins are available:
+## Features  
+✅ **User Authentication** – Secure login with Firebase Authentication  
+✅ **Add, Edit & Delete Expenses** – Easily manage your expenses  
+✅ **Filter by Date & Category** – View expenses based on specific timeframes and categories  
+✅ **Real-time Database** – Syncs expenses with Firebase Firestore  
+✅ **Persistent Storage** – All expenses are stored securely and persist after refresh  
+✅ **Mobile-Friendly UI** – Responsive design for seamless experience  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack  
+- **Frontend:** React, Vite, Tailwind CSS  
+- **Backend:** Firebase Firestore (NoSQL Database)  
+- **Authentication:** Firebase Authentication  
+- **Hosting:** Vercel   
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## License  
+This project is licensed under the **MIT License**.  
