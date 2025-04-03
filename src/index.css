@@ -1,15 +1,1 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Nunito", serif;
-}
-
-:root{
-  --pri-color: #0070f3;
-  --white-lite: #fafafa;
-  --white-dark: #f2f2f2cc;
-  --shade-of-black: #171717;
-  --deep-dark: #121212;
-  --text: #666666;
-}
+@import "tailwindcss";
