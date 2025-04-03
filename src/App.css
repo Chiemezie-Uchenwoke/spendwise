@@ -1,42 +1,185 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+:root{
+  --pri-color: #0070f3;
+  --white-lite: #fafafa;
+  --white-dark: #f2f2f2cc;
+  --shade-of-black: #171717;
+  --deep-dark: #121212;
+  --text: #666666;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+body{
+  background-color: var(--white-dark);
+  font-family: "Nunito", serif;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+/* Container width class */
+.container{
+  width: 92%;
+  margin-inline: auto;
+}
+
+/* Margin-top */
+.top-margin{
+  margin-top: 5rem;
+}
+
+/* Global Headings Style */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600; 
+  line-height: 1.3; 
+}
+
+/* clamp(minimum, preferred, maximum) */
+
+
+/* Specific Styles for Each Heading */
+h1 {
+  font-size: clamp(1.8rem, 3.5vw, 3.5rem); /* Largest heading */
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.75vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.125rem, 1vw, 1.175rem);
+}
+
+h4 {
+  font-size: clamp(1rem, 1vw, 1.125rem);
+}
+
+/* Paragraph Style */
+p {
+  font-size: 0.9rem;
+  line-height: 1.6; 
+  margin: 0 0 15px; /* Add space below each paragraph */
+}
+
+/* List Items */
+li {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* .scroll__top{
+  all: unset;
+  cursor: pointer;
+  background-color: var(--sec-color-lite);
+  color: var(--pri-color);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  z-index: 90;
+  position: fixed;
+  right: 3%;
+  bottom: 8%;
+  animation: scroll 2s ease-in-out infinite;
+} */
+
+/* .whatsapp{
+  all: unset;
+  cursor: pointer;
+  background-color: var(--acc-color-lite);
+  color: var(--pri-color);
+  box-shadow: 0px 0px 3px 5px rgba(0, 0, 0, 0.07);
+  padding: 0.1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  z-index: 90;
+  position: fixed;
+  left: 2%;
+  bottom: 8%;
+  animation: scroll 2s ease-in-out infinite;
+} */
+
+/* @keyframes scroll {
+  0%{
+      transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+
+  50%{
+      transform: translateY(-0.5rem);
+  }
+
+  100%{
+      transform: translateY(0);
+  }
+} */
+
+
+@media (min-width: 768px){
+  .container{
+      width: 90%;
+  }
+
+  .top-margin{
+      margin-top: 4rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (min-width: 1000px){
+  .container{
+      width: 85%;
   }
+
+  .top-margin{
+      margin-top: 3rem;
+  }
+
+/*   .scroll__top{
+      right: 2%;
+  }
+
+  .whatsapp{
+      left: 1.2%;
+  } */
 }
 
-.card {
-  padding: 2em;
+/* Big screens */
+@media (min-width: 1500px){
+  .container{
+      width: 65%;
+      margin-inline: auto;
+  }
+  
+ .top-margin{
+      margin-top: 8rem;
+  }
+ /* 
+  .scroll__top{
+      right: 7%;
+  } */
 }
 
-.read-the-docs {
-  color: #888;
+/* 4k screens */
+@media (min-width: 2560px){
+  .container{
+      width: 60%;
+      margin-inline: auto;
+  }
+  
+  .top-margin{
+      margin-top: 10rem;
+  }
 }
