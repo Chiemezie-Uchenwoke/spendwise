@@ -1,4 +1,3 @@
-import "./Header.css";
 import { FaPlus } from "react-icons/fa";
 
 const Header = () => {
