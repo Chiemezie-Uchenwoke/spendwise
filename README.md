@@ -34,12 +34,3 @@ SpendWise is a modern and secure expense tracking web application that helps use
 
 **File Uploads**  
 - Multer
-
----
-
-## 📦 Installation
-
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/yourusername/spendwise.git
-   cd spendwise
