@@ -5,8 +5,8 @@ SpendWise is a modern and secure expense tracking web application that helps use
 ## Features
 
 - User authentication with **JWT**, **Bcrypt**, and **Express-session**
-- Add, edit, and delete expenses
-- Filter expenses by **date** and **category**
+- Add, edit, and delete income / expenses
+- Filter entries by **date** and **category**
 - Secure backend APIs built with **Node.js** and **Express**
 - Responsive UI using **React** and **Tailwind CSS**
 - File uploads using **Multer** 
