@@ -41,4 +41,4 @@ SpendWise is a modern and secure expense tracking web application that helps use
 
 **Chiemezie Uchenwoke**  
 - Fullstack Developer  
-- [LinkedIn Profile](https://www.linkedin.com/in/chiemezieuchenwoke)
+- [LinkedIn Profile](https://www.linkedin.com/in/chiemezieuche/)
