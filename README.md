@@ -1,4 +1,4 @@
-# 💰 SpendWise – Expense Tracker
+# SpendWise – Expense Tracker
 
 SpendWise is a modern and secure expense tracking web application that helps users manage their personal finances with ease. Users can log, edit, and delete daily income/expense, filter income/expense by date and category, and gain insights into their spending habits over time.
 
