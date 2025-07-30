@@ -1,6 +1,6 @@
 import express from "express";
 import env from "dotenv";
-import { authRoute } from "./routers/authRouter.js";
+import { authRoute } from "./routes/authRoutes.js";
 
 env.config();
 const app = express();
