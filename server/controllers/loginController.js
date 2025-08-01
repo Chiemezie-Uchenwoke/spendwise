@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
-import User from "../models/usermodel";
+import User from "../models/usermodel.js";
 import jwt from "jsonwebtoken";
+import env from "dotenv";
 
+env.config();
 const jwtSecret = process.env.JWT_SECRET;
 
 const logInUser = async (req, res, next) => {
@@ -30,7 +32,8 @@ const logInUser = async (req, res, next) => {
 
                 return res.status(200).json({
                     success: true,
-                    message: "Login Successful!"
+                    message: "Login Successful!",
+                    user
                 })
             } else {
                 return res.status(403).json({message: "Wrong password!"});

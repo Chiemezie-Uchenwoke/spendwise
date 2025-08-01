@@ -4,6 +4,7 @@ import env from "dotenv";
 import { authRoute } from "./routes/authRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFound } from "./middlewares/notfound.js";
+import session from "express-session";
 
 env.config();
 
@@ -15,7 +16,16 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,           // true = send cookie only over HTTPS
+    httpOnly: true,          
+    maxAge: 1000 * 60 * 15   // cookie expires in 15 minutes (in ms)
+  }
+}));
 
 app.use("/auth", authRoute);
 
