@@ -27,7 +27,7 @@ const logInUser = async (req, res, next) => {
                     username: existingUser.username
                 }
 
-                const token = jwt.sign(user, jwtSecret, {expiresIn: "15m"});
+                const token = jwt.sign(user, jwtSecret, {expiresIn: "30m"});
                 req.session.accessToken = token;
 
                 return res.status(200).json({

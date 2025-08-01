@@ -23,7 +23,7 @@ app.use(session({
   cookie: {
     secure: false,           // true = send cookie only over HTTPS
     httpOnly: true,          
-    maxAge: 1000 * 60 * 15   // cookie expires in 15 minutes (in ms)
+    maxAge: 1000 * 60 * 30   // cookie expires in 30 minutes (in ms)
   }
 }));
 
