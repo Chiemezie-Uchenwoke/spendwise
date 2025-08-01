@@ -4,42 +4,34 @@ import User from "../models/usermodel.js";
 const saltRounds = 10;
 
 const registerUser = async (req, res, next) => {
-    const {username, email, password} = req.body;
-    
-    
-    try {
-        const userEmail = email.toLowerCase();
-        const user = await User.findOne({email: userEmail});
+  const { username, email, password } = req.body;
 
-        if (user) {
-            return res.status(400).json({message: "User already exists"});
-        } else {
-            bcrypt.hash(password, saltRounds, async (err, hash) => {
-                if (err){
-                    console.log("Error hashing password: ", err);
-                    return next(err);
-                }
+  try {
+    const trimUsername = username.trim();
+    const userEmail = email.toLowerCase().trim();
+    const existingUser = await User.findOne({ email: userEmail });
 
-                const newUser = await User.create({
-                    username,
-                    email: userEmail,
-                    password: hash
-                });
-                
-                console.log(newUser);
-
-                return res.status(201).json({
-                    success: true,
-                    message: "Account created successfully! Please log in"
-                });
-            });
-        }
-
-    } catch (err){
-        console.log(err);
-        next(err);
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
-    
+
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    await User.create({
+      username: trimUsername,
+      email: userEmail,
+      password: hashedPassword
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Account created successfully! Please log in"
+    });
+
+  } catch (err) {
+    console.error("Registration error:", err);
+    return next(err);
+  }
 };
 
-export {registerUser};
+export { registerUser };
