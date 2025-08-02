@@ -11,7 +11,8 @@ const logInUser = async (req, res, next) => {
 
     try {
 
-        const existingUser = await User.findOne({email});
+        const userEmail = email.toLowerCase().trim();
+        const existingUser = await User.findOne({email: userEmail});
 
         if (!existingUser) {
             return res.status(401).json({message: "Please register before login!"});
