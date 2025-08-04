@@ -8,7 +8,7 @@ const addTransaction = async (req, res, next) => {
 
         await Transaction.create({
             userId,
-            amount,
+            amount: Number(amount),
             type,
             categoryId,
             description: description || "",
