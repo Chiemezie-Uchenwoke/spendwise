@@ -1,18 +1,27 @@
 import Transaction from "../models/transactionModel.js";
 
-const addTransaction = async (req, res) => {
+const addTransaction = async (req, res, next) => {
     const {amount, type, categoryId, description, date} = req.body;
 
-    const userId = req.user.userId;
+    try {
+        const userId = req.user.userId;
 
-    await Transaction.create({
-        userId,
-        amount,
-        type,
-        categoryId,
-        description,
-        date
-    });
+        await Transaction.create({
+            userId,
+            amount,
+            type,
+            categoryId,
+            description: description || "",
+            date
+        });
+
+        return res.status(200).json({
+            success: true, 
+            message: "Transaction added successfully."
+        })
+    } catch(err) {
+        next(err);
+    }
 }
 
 export {addTransaction};
