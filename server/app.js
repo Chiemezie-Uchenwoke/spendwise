@@ -1,10 +1,11 @@
 import express from "express";
 import mongoose from 'mongoose';
 import env from "dotenv";
-import { authRoute } from "./routes/authRoutes.js";
+import { authRouter } from "./routes/authRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFound } from "./middlewares/notfound.js";
 import session from "express-session";
+import transactionRouter from "./routes/transactionRoutes.js";
 
 env.config();
 
@@ -27,7 +28,8 @@ app.use(session({
   }
 }));
 
-app.use("/auth", authRoute);
+app.use("/auth", authRouter);
+app.use("/transactions", transactionRouter);
 
 app.use(notFound);
 app.use(errorHandler);
