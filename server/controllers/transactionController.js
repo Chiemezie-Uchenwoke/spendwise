@@ -25,10 +25,20 @@ const addTransaction = async (req, res, next) => {
 }
 
 const fetchAllTransactions = async (req, res, next) => {
-    const userId = req.user.userId;
-    const userTransaction = await Transaction.find({userId: userId});
+    try {
 
-    
+        const userId = req.user.userId;
+        const userTransactions = await Transaction.find({userId});
+
+        return res.status(200).json({
+            success: true,
+            userTransactions
+        });
+
+    } catch(err) {
+        next(err);
+    }
+
 }
 
-export {addTransaction};
+export {addTransaction, fetchAllTransactions};
