@@ -60,7 +60,7 @@ const editTransaction = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
-            message: "Post updated successfully"
+            message: "Transaction updated successfully"
         });
 
     } catch(err){
@@ -68,4 +68,27 @@ const editTransaction = async (req, res, next) => {
     }
 }
 
-export {addTransaction, fetchAllTransactions, editTransaction};
+const deleteTransaction = async (req, res, next) => {
+    const {transactionId} = req.params;
+
+    try {
+        const userId = req.user.userId;
+        const transaction = await Transaction.findOne({_id: transactionId, userId});
+
+        if (!transaction) {
+            return res.status(404).json({ message: "Transaction not found or unauthorized." });
+        }
+
+        await Transaction.deleteOne({_id: transactionId});
+
+        return res.status(200).json({
+            success: true,
+            message: "Transaction deleted successfully"
+        });
+
+    } catch(err) {
+        next(err);
+    }
+}
+
+export {addTransaction, fetchAllTransactions, editTransaction, deleteTransaction};
