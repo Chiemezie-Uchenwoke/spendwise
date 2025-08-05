@@ -24,4 +24,11 @@ const addTransaction = async (req, res, next) => {
     }
 }
 
+const fetchAllTransactions = async (req, res, next) => {
+    const userId = req.user.userId;
+    const userTransaction = await Transaction.find({userId: userId});
+
+    
+}
+
 export {addTransaction};

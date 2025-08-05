@@ -1,13 +1,13 @@
 import express from "express";
 import mongoose from 'mongoose';
-import env from "dotenv";
+import dotenv from "dotenv";
 import { authRouter } from "./routes/authRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFound } from "./middlewares/notfound.js";
 import session from "express-session";
 import transactionRouter from "./routes/transactionRoutes.js";
 
-env.config();
+dotenv.config();
 
 const dbUrl = process.env.SPENDWISE_DB_URL;
 mongoose.connect(dbUrl).then(() => console.log("Database is running"));

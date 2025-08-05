@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-import env from 'dotenv';
-import Category from '../models/categoryModel.js';
+import dotenv from 'dotenv';
+import Category from "../models/categoryModel.js";
 
-env.config();
+dotenv.config({path: "../.env"});
 
 const dbUrl = process.env.SPENDWISE_DB_URL;
+console.log("Database URL:", dbUrl);
 mongoose.connect(dbUrl).then(() => console.log("Database is running"));
 
 const categories = [
@@ -24,15 +25,13 @@ const categories = [
   { name: "Grants", type: "income" },
   { name: "Others", type: "income" },
 
-  // Expense
+  // Expense - Existing
   { name: "Rent", type: "expense" },
   { name: "Utilities", type: "expense" },
   { name: "Internet & Phone", type: "expense" },
   { name: "Groceries", type: "expense" },
   { name: "Transportation", type: "expense" },
   { name: "Fuel", type: "expense" },
-  { name: "Dining Out", type: "expense" },
-  { name: "Entertainment", type: "expense" },
   { name: "Subscriptions", type: "expense" },
   { name: "Health & Medical", type: "expense" },
   { name: "Insurance", type: "expense" },
@@ -45,8 +44,26 @@ const categories = [
   { name: "Travel", type: "expense" },
   { name: "Taxes", type: "expense" },
   { name: "Childcare", type: "expense" },
-  { name: "Miscellaneous", type: "expense" }
+  { name: "Car Wash", type: "expense" },
+
+  // Expense - Food & Dining
+  { name: "Breakfast", type: "expense" },
+  { name: "Lunch", type: "expense" },
+  { name: "Dinner", type: "expense" },
+  { name: "Snacks", type: "expense" },
+  { name: "Coffee", type: "expense" },
+
+  // Expense - Work & Business
+  { name: "Work Tools", type: "expense" },
+  { name: "Co-working Space", type: "expense" },
+
+  // Expense - Shopping / Other
+  { name: "Electronics", type: "expense" },
+  { name: "Personal Care", type: "expense" },
+  { name: "Beauty / Salon", type: "expense" },
+  { name: "Others", type: "expense" },
 ];
+
 
 
 const insertCategories = async () => {
