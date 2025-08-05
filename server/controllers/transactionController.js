@@ -41,4 +41,31 @@ const fetchAllTransactions = async (req, res, next) => {
 
 }
 
-export {addTransaction, fetchAllTransactions};
+const editTransaction = async (req, res, next) => {
+    const {transactionId} = req.params;
+    const {amount, type, categoryId, description, date} = req.body;
+
+    try {
+        const userId = req.user.userId;
+        const transaction = await Transaction.findOne({_id: transactionId, userId});
+
+        if (!transaction) {
+            return res.status(404).json({ message: "Transaction not found or unauthorized." });
+        }
+
+        await Transaction.findOneAndUpdate(
+            {_id: transactionId, userId}, 
+            {amount, type, categoryId, description, date}
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Post updated successfully"
+        });
+
+    } catch(err){
+        next(err);
+    }
+}
+
+export {addTransaction, fetchAllTransactions, editTransaction};
