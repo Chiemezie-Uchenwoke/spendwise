@@ -28,8 +28,10 @@ const logInUser = async (req, res, next) => {
                     username: existingUser.username
                 }
 
-                const token = jwt.sign(user, jwtSecret, {expiresIn: "30m"});
+                const token = jwt.sign(user, jwtSecret, {expiresIn: "15m"});
+                const refreshToken = jwt.sign(user, jwtSecret, { expiresIn: "7d" });
                 req.session.accessToken = token;
+                req.session.refreshToken = refreshToken;
 
                 return res.status(200).json({
                     success: true,
