@@ -24,7 +24,7 @@ app.use(session({
   cookie: {
     secure: false,           // true = send cookie only over HTTPS
     httpOnly: true,          
-    maxAge: 1000 * 60 * 60   // cookie expires in 1h (in ms)
+    maxAge: 1000 * 60 * 60 * 24 * 7   // cookie expires in 7 days (in ms)
   }
 }));
 

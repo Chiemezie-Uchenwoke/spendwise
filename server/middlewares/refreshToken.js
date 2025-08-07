@@ -10,7 +10,13 @@ const handleRefreshToken = (req, res) => {
     }
 
     try {
-        const user = jwt.verify(refreshToken, jwtSecret);
+        const decoded = jwt.verify(refreshToken, jwtSecret);
+        
+        const user = {
+            userId: decoded.userId,
+            username: decoded.username
+        }
+
         const newToken = jwt.sign(user, jwtSecret, {expiresIn: "15m"});
         req.session.accessToken = newToken;
 
