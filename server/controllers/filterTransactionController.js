@@ -1,7 +1,7 @@
 import Transaction from "../models/transactionModel.js";
 
 const filterTransactions = async (req, res, next) => {
-    const {startDate, endDate, transactionType, categoryId} = req.query;
+    const {startDate, endDate, type, categoryId} = req.query;
     
     try {
 
@@ -12,8 +12,8 @@ const filterTransactions = async (req, res, next) => {
             query.date = {$gte: new Date(startDate), $lte: new Date(endDate)};
         }
 
-        if (transactionType && transactionType !== "all"){
-            query.type = transactionType;
+        if (type && type !== "all"){
+            query.type = type;
         }
 
         if (categoryId) {
