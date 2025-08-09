@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFound } from "./middlewares/notfound.js";
 import session from "express-session";
 import transactionRouter from "./routes/transactionRoutes.js";
+import profileRouter from "./routes/profileRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -30,6 +32,7 @@ app.use(session({
 
 app.use("/auth", authRouter);
 app.use("/transactions", transactionRouter);
+app.use("/profile", profileRouter);
 
 app.use(notFound);
 app.use(errorHandler);

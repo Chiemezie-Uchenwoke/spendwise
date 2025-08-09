@@ -6,3 +6,6 @@ import { authenticateUser } from "../middlewares/authenticateJwt";
 const profileRouter = express.Router();
 
 profileRouter.post("/upload", authenticateUser, upload.single("profileImage"), uploadProfileImage);
+profileRouter.get("/me", authenticateUser, getUserProfileImage);
+
+export default profileRouter;
