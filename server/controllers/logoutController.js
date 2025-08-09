@@ -1,4 +1,8 @@
 const logOutUser = (req, res) => {
+
+    req.session.accessToken = null;
+    req.session.refreshToken = null;
+
     req.session.destroy((err) => {
         if (err) {
             console.error("Logout error:", err);
