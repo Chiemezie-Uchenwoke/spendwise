@@ -1,16 +1,14 @@
 import Profile from "../models/profileModel";
 
 const uploadProfileImage = async (req, res, next) => {
-    const {file} = req.file;
-
     try {
         const userId = req.user.userId;
 
-        if (!file){
+        if (!req.file){
             return res.status(400).json({message: "No file uploaded"});
         }
 
-        const filename = file.filename;
+        const filename = req.file.filename;
 
         // check if profile already exist
         const profile = await Profile.findOne({userId});
