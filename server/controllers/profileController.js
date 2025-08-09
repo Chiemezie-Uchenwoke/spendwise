@@ -1,4 +1,7 @@
 import Profile from "../models/profileModel.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const uploadProfileImage = async (req, res, next) => {
     try {
@@ -43,7 +46,7 @@ const getUserProfileImage = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
-            imageUrl: `/uploads/profiles/${profile.profileImage}`
+            imageUrl: `${process.env.SERVER_BASE_URL}/uploads/profiles/${profile.profileImage}`
         });
 
     } catch(err){
