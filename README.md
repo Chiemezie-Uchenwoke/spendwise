@@ -15,7 +15,7 @@ SpendWise is a modern and secure expense tracking web application that helps use
 
 ---
 
-## Tech Stack
+## Tech Stack 
 
 **Frontend**  
 - React  
