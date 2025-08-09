@@ -1,4 +1,4 @@
-import Profile from "../models/profileModel";
+import Profile from "../models/profileModel.js";
 
 const uploadProfileImage = async (req, res, next) => {
     try {
