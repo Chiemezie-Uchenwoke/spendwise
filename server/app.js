@@ -7,6 +7,8 @@ import { notFound } from "./middlewares/notfound.js";
 import session from "express-session";
 import transactionRouter from "./routes/transactionRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ mongoose.connect(dbUrl).then(() => console.log("Database is running"));
 
 const app = express();
 const port = process.env.PORT || 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
