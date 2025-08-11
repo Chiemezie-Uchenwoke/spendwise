@@ -5,7 +5,7 @@ import { Link } from "react-router";
 const DesktopHeader = () => {
     return (
         <header 
-            className="hidden w-full h-[4rem] min-[1000px]:flex items-center border-b-1 border-black/30"
+            className="hidden w-full h-[4rem] min-[1000px]:flex items-center border-b border-black/30"
         >
             <div className="container w-full flex justify-between items-center">
                 <div className="flex items-center gap-2">
