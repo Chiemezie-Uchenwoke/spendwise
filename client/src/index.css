@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --color-pri-col: #2563ea;
+  --color-sec-col: #111828;
+  --color-white-col: #f6f6f6;
+}
