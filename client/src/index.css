@@ -4,5 +4,34 @@
   --color-pri-col: #2563ea;
   --color-sec-col: #111828;
   --color-white-col: #f6f6f6;
-  --font-nunito: "Poppins", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+}
+
+.container{
+  width: 95%;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px){
+  .container{
+    width: 92%;
+  }
+}
+
+@media (min-width: 1000px){
+  .container{
+    width: 85%;
+  }
+}
+
+@media (min-width: 1500px){
+  .container{
+    width: 80%;
+  }
+}
+
+@media (min-width: 1800px){
+  .container{
+    width: 70%;
+  }
 }
