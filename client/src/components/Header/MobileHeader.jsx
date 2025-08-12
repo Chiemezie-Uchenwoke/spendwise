@@ -1,15 +1,31 @@
 import spendwiseLogo from "../../assets/spendwise.png";
 import { Link } from "react-router";
 import { HiMiniBars3 } from "react-icons/hi2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const MobileHeader = () => {
-    const [showMobile, setShowMobile] = useState(false);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-    const handleToggle = () => {
-        setShowMobile(prev => !prev);
+    const handleToggle = (e) => {
+        e.stopPropagation();
+        setShowMobileMenu(prev => !prev);
     }   
+
+    useEffect(() => {
+
+        const handleClickOutside = () => {
+            setShowMobileMenu(false);
+        }
+
+        if (showMobileMenu) {
+            window.addEventListener("click", handleClickOutside);
+        }
+
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        }
+    }, [showMobileMenu]);
 
     return (
         <header 
@@ -27,13 +43,13 @@ const MobileHeader = () => {
                     </div>
 
                     <nav className="flex gap-8 items-center" aria-label="Main site navigation">
-                        <button className="border border-black/40 py-1 px-1 rounded" onClick={handleToggle}>
+                        <button className="border border-black/40 py-1 px-1 rounded" onClick={handleToggle} aria-expanded={showMobileMenu} aria-controls="mobile-menu">
                             <HiMiniBars3 className="text-xl" />
                         </button>
 
                         {
-                            showMobile && 
-                            <ul className="absolute top-full left-0 bg-dark-col py-12 w-full flex flex-col gap-6 shadow-lg z-30">
+                            showMobileMenu && 
+                            <ul id="mobile-menu" className="absolute top-full left-0 bg-dark-col py-12 w-full flex flex-col gap-6 shadow-lg z-30">
                                 <div className="px-4 flex flex-col gap-8">
                                     <li><a href="#features" className="capitalize font-medium text-white-col">features</a></li>
                                     <li><a href="#how-it-works" className="capitalize font-medium text-white-col">how it works</a></li>
