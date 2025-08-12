@@ -18,17 +18,17 @@ const DesktopHeader = () => {
                 </div>
 
                 <nav className="flex gap-8" aria-label="Main site navigation">
-                    <a href="#features" className="capitalize font-medium">features</a>
+                    <a href="#features" className="capitalize font-medium hover:text-pri-col">features</a>
 
-                    <a href="#how-it-works" className="capitalize font-medium">how it works</a>
+                    <a href="#how-it-works" className="capitalize font-medium hover:text-pri-col">how it works</a>
 
-                    <a href="#reviews" className="capitalize font-medium">reviews</a>
+                    <a href="#reviews" className="capitalize font-medium hover:text-pri-col">reviews</a>
                 </nav>
 
                 <nav className="flex gap-4 items-center" aria-label="User actions">
-                    <Link className="capitalize font-medium">sign in</Link>
+                    <Link className="capitalize font-medium hover:text-pri-col">sign in</Link>
 
-                    <Link className="capitalize font-medium bg-pri-col text-white-col py-2 px-6 rounded-xl">get started</Link>
+                    <Link className="capitalize font-medium bg-pri-col text-white-col py-2 px-6 rounded-xl hover:brightness-95">get started</Link>
                 </nav>
             </div>
         </header>
