@@ -28,7 +28,7 @@ const DesktopHeader = () => {
                 <nav className="flex gap-4 items-center" aria-label="User actions">
                     <Link className="capitalize font-medium hover:text-pri-col">sign in</Link>
 
-                    <Link className="capitalize font-medium bg-pri-col text-white-col py-2 px-6 rounded-xl hover:brightness-95">get started</Link>
+                    <Link className="capitalize font-medium bg-pri-col text-white-col py-2 px-6 rounded-md hover:brightness-95">get started</Link>
                 </nav>
             </div>
         </header>
