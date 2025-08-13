@@ -8,6 +8,10 @@
   --font-poppins: "Poppins", sans-serif;
 }
 
+.nav-link{
+  @apply capitalize font-medium hover:text-pri-col
+}
+
 .container{
   width: 95%;
   margin-inline: auto;

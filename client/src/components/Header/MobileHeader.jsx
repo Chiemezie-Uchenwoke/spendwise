@@ -29,9 +29,7 @@ const MobileHeader = () => {
         }
     }, [showMobileMenu]);
 
-    const handleHomeNavigate = () => {
-        navigate("/");
-    }
+    const handleHomeNavigate = () => navigate("/");
 
     return (
         <header 

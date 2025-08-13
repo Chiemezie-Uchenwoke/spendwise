@@ -6,9 +6,7 @@ import { useNavigate } from "react-router";
 const DesktopHeader = () => {
     const navigate = useNavigate();
 
-    const handleHomeNavigate = () => {
-        navigate("/");
-    }
+    const handleHomeNavigate = () => navigate("/");
 
     return (
         <header 
@@ -25,7 +23,7 @@ const DesktopHeader = () => {
                 </div>
 
                 <nav className="flex gap-8" aria-label="Main site navigation">
-                    <a href="#features" className="capitalize font-medium hover:text-pri-col">features</a>
+                    <a href="#features" className="nav-link">features</a>
 
                     <a href="#how-it-works" className="capitalize font-medium hover:text-pri-col">how it works</a>
 
