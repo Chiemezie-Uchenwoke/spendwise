@@ -1,14 +1,21 @@
 import spendwiseLogo from "../../assets/spendwise.png";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 
 const DesktopHeader = () => {
+    const navigate = useNavigate();
+
+    const handleHomeNavigate = () => {
+        navigate("/");
+    }
+
     return (
         <header 
-            className="hidden w-full h-[4rem] min-[1000px]:flex items-center border-b border-black/20"
+            className="hidden w-full h-[4rem] min-[1100px]:flex items-center border-b border-black/20"
         >
             <div className="container w-full flex justify-between items-center">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer" onClick={handleHomeNavigate}>
                     <img 
                         src={spendwiseLogo} 
                         alt="SpendWise Logo" 

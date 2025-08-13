@@ -2,10 +2,12 @@ import spendwiseLogo from "../../assets/spendwise.png";
 import { Link } from "react-router";
 import { HiMiniBars3 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 
 const MobileHeader = () => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const navigate = useNavigate();
 
     const handleToggle = (e) => {
         e.stopPropagation();
@@ -27,13 +29,17 @@ const MobileHeader = () => {
         }
     }, [showMobileMenu]);
 
+    const handleHomeNavigate = () => {
+        navigate("/");
+    }
+
     return (
         <header 
-            className="w-full h-[4rem] min-[1000px]:hidden items-center border-b border-black/20 sticky top-0 bg-white-col z-50"
+            className="w-full h-[4rem] min-[1100px]:hidden items-center border-b border-black/20 sticky top-0 bg-white-col z-50"
         >
             <div className="w-full h-full flex items-center relative">
                 <div className="w-full px-4 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 cursor-pointer" onClick={handleHomeNavigate}>
                         <img 
                             src={spendwiseLogo} 
                             alt="SpendWise Logo" 
