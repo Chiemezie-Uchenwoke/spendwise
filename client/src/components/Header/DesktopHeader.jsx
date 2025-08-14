@@ -6,14 +6,12 @@ import { useNavigate } from "react-router";
 const DesktopHeader = () => {
     const navigate = useNavigate();
 
-    const handleHomeNavigate = () => navigate("/");
-
     return (
         <header 
             className="hidden w-full h-[4rem] min-[1100px]:flex items-center border-b border-black/20"
         >
             <div className="container w-full flex justify-between items-center">
-                <div className="flex items-center gap-2 cursor-pointer" onClick={handleHomeNavigate}>
+                <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
                     <img 
                         src={spendwiseLogo} 
                         alt="SpendWise Logo" 
@@ -25,13 +23,13 @@ const DesktopHeader = () => {
                 <nav className="flex gap-8" aria-label="Main site navigation">
                     <a href="#features" className="nav-link">features</a>
 
-                    <a href="#how-it-works" className="capitalize font-medium hover:text-pri-col">how it works</a>
+                    <a href="#how-it-works" className="nav-link">how it works</a>
 
-                    <a href="#reviews" className="capitalize font-medium hover:text-pri-col">reviews</a>
+                    <a href="#reviews" className="nav-link">reviews</a>
                 </nav>
 
                 <nav className="flex gap-4 items-center" aria-label="User actions">
-                    <Link className="capitalize font-medium hover:text-pri-col">sign in</Link>
+                    <Link className="nav-link">sign in</Link>
 
                     <Link className="capitalize font-medium bg-pri-col text-white-col py-2 px-6 rounded-md hover:brightness-95">get started</Link>
                 </nav>

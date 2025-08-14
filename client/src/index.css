@@ -12,6 +12,10 @@
   @apply capitalize font-medium hover:text-pri-col
 }
 
+.nav-link-mobile{
+  @apply capitalize font-medium text-white-col
+}
+
 .container{
   width: 95%;
   margin-inline: auto;
