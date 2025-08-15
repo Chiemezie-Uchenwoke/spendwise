@@ -1,5 +1,6 @@
 import DesktopHeader from "../components/Header/DesktopHeader";
 import MobileHeader from "../components/Header/MobileHeader";
+import Hero from "../components/Hero/Hero";
 
 const HomePage = () => {
 
@@ -7,6 +8,7 @@ const HomePage = () => {
         <>
             <DesktopHeader />  
             <MobileHeader /> 
+            <Hero />
         </>
     )
 }

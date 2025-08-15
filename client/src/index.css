@@ -2,9 +2,12 @@
 
 @theme {
   --color-pri-col: #2563ea;
+  --color-blue-shade: #235ee6;
   --color-sec-col: #111828;
   --color-white-col: #f6f6f6;
+  --color-white-shade: #f9fafc;
   --color-dark-col: #1e293b;
+  --color-acc-col: #eff3fc;
   --font-poppins: "Poppins", sans-serif;
 }
 
