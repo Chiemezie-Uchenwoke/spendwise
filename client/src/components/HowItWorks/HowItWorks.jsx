@@ -32,7 +32,7 @@ const HowItWorks = () => {
                     {
                         howItWorksSteps.map((step) => {
                             return (
-                                <div key={step.id} className="flex flex-col gap-4 border border-black/15 py-8 px-4 rounded-md ">
+                                <div key={step.id} className="flex flex-col gap-4 border border-black/15 py-8 px-4 rounded-md hover:bg-acc-col duration-300 ease-in-out">
                                     <span className="w-[3rem] h-[3rem] lg:w-[3.5rem] lg:h-[3.5rem] flex justify-center items-center bg-pri-col text-white-col rounded-[50%] font-bold lg:text-lg">{step.id}</span>
 
                                     <h3 className="font-bold capitalize">{step.heading}</h3>
