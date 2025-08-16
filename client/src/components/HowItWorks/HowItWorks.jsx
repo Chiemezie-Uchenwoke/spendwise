@@ -33,11 +33,11 @@ const HowItWorks = () => {
                         howItWorksSteps.map((step) => {
                             return (
                                 <div key={step.id} className="flex flex-col gap-4 border border-black/15 py-8 px-4 rounded-md ">
-                                    <span className="w-[3rem] h-[3rem] flex justify-center items-center bg-pri-col text-white-col rounded-[50%] font-bold">{step.id}</span>
+                                    <span className="w-[3rem] h-[3rem] lg:w-[3.5rem] lg:h-[3.5rem] flex justify-center items-center bg-pri-col text-white-col rounded-[50%] font-bold lg:text-lg">{step.id}</span>
 
                                     <h3 className="font-bold capitalize">{step.heading}</h3>
 
-                                    <p className="text-base sm:text-sm lg:text-base">
+                                    <p className="text-base sm:text-sm lg:text-base text-black/65">
                                         {step.text}
                                     </p> 
                                 </div>
