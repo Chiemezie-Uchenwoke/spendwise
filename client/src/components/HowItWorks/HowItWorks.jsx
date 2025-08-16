@@ -19,7 +19,7 @@ const HowItWorks = () => {
     ]
 
     return (
-        <section className="top-margin bg-acc-col/45 py-16">
+        <section id="how-it-works" className="top-margin bg-acc-col/45 py-16">
             <div className="container flex flex-col gap-10">
                 <div className="section-intro">
                     <h2 className="section-heading">How it works</h2>
