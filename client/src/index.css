@@ -11,6 +11,10 @@
   --font-poppins: "Poppins", sans-serif;
 }
 
+html{
+  scroll-padding-top: 4rem;
+}
+
 .nav-link{
   @apply capitalize font-medium hover:text-pri-col
 }
@@ -21,6 +25,18 @@
 
 .top-margin{
   @apply mt-20
+}
+
+.features-card{
+  @apply border border-black/15 py-8 px-4 flex flex-col gap-4 rounded-md hover:shadow-lg duration-300 ease-in-out
+}
+
+.features-icon-wrapper{
+  @apply w-[3rem] h-[3rem] flex justify-center items-center border border-black/10 rounded-md bg-acc-col
+}
+
+.features-icon{
+  @apply text-pri-col text-xl
 }
 
 .container{
