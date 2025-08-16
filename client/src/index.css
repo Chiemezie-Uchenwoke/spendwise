@@ -15,6 +15,18 @@ html{
   scroll-padding-top: 4rem;
 }
 
+.section-intro{
+  @apply flex flex-col items-center gap-2
+}
+
+.section-heading{
+  @apply capitalize font-bold text-xl md:text-2xl lg:text-3xl
+}
+
+.section-text{
+  @apply text-center sm:text-lg
+}
+
 .nav-link{
   @apply capitalize font-medium hover:text-pri-col
 }

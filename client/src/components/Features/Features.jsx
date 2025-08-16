@@ -11,14 +11,14 @@ const Features = () => {
           id="features" 
           className="container top-margin flex flex-col gap-8"
         >
-            <div className="flex flex-col items-center gap-2">
+            <div className="section-intro">
                 <h2 
-                  className="capitalize font-bold text-xl md:text-2xl lg:text-3xl"
+                  className="section-heading"
                 >
                     simple yet powerful features
                 </h2>
 
-                <p className="text-center sm:text-lg">
+                <p className="section-text">
                     Everything you need to manage your expenses effectively
                 </p>
             </div>
