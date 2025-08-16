@@ -23,16 +23,16 @@ const Footer = () => {
                         <h3 className="font-bold text-white-col text-lg md:text-xl capitalize">product</h3>
 
                         <ul className="flex flex-col gap-4">
-                            <li className="text-white-col/50 hover:text-white-col capitalize">
-                                <a href="#features">features</a>
+                            <li>
+                                <a href="#features" className="text-white-col/50 capitalize hover:text-white-col">features</a>
                             </li>
                             
-                            <li className="text-white-col/50 capitalize hover:text-white-col">
-                                <a href="#how-it-works">how it works</a>
+                            <li>
+                                <a href="#how-it-works" className="text-white-col/50 capitalize hover:text-white-col">how it works</a>
                             </li>
 
-                            <li className="text-white-col/50 capitalize hover:text-white-col">
-                                <a href="#reviews">reviews</a>
+                            <li>
+                                <a href="#reviews" className="text-white-col/50 capitalize hover:text-white-col">reviews</a>
                             </li>
                         </ul>
                     </div>
