@@ -5,7 +5,7 @@ const RegisterForm = () => {
         <div className="form-header">
             <div className="form-wrapper">
                 <div className="flex flex-col gap-2">
-                    <h2 className="capitalize font-bold text-base md:text-lg lg:text-xl">Create an account</h2>
+                    <h2 className="font-bold text-base md:text-lg lg:text-xl">Create an account</h2>
 
                     <p className="text-sm text-black/50">
                         Enter your information to create an acount
