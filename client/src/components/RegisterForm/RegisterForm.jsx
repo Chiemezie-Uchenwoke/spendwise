@@ -25,7 +25,7 @@ const RegisterForm = () => {
                           type="text" 
                           placeholder="John Doe" 
                           id="username" 
-                          className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black lowercase"
+                          className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black lowercase placeholder:capitalize"
                         />
                     </div>
 
@@ -57,7 +57,7 @@ const RegisterForm = () => {
                           type="password" 
                           id="password" 
                           placeholder="Enter password"
-                          className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black lowercase"
+                          className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black lowercase placeholder:capitalize"
                         />
                     </div>
 

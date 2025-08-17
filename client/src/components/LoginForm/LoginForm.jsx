@@ -41,7 +41,7 @@ const LoginForm = () => {
                         type="password" 
                         id="password" 
                         placeholder="Enter password"
-                        className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black "
+                        className="border border-black/20 w-full h-[2.5rem] rounded-md px-2 text-sm focus:border-2 focus:border-black placeholder:capitalize"
                         />
                     </div>
 
