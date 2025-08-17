@@ -29,7 +29,7 @@ const RegisterForm = () => {
                         />
                     </div>
 
-                    <div flex flex-col gap-2>
+                    <div className="flex flex-col gap-2">
                         <label 
                           htmlFor="email"
                           className="font-medium"
@@ -45,7 +45,7 @@ const RegisterForm = () => {
                         />
                     </div>
 
-                    <div flex flex-col gap-2>
+                    <div className="flex flex-col gap-2">
                         <label 
                           htmlFor="password"
                           className="font-medium"
