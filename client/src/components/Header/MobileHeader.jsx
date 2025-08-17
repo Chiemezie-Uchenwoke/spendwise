@@ -55,8 +55,8 @@ const MobileHeader = () => {
                                 <li><a href="#features" className="nav-link-mobile">features</a></li>
                                 <li><a href="#how-it-works" className="nav-link-mobile">how it works</a></li>
                                 <li><a href="#reviews" className="nav-link-mobile">reviews</a></li>
-                                <li><Link className="nav-link-mobile">sign in</Link></li>
-                                <li><Link className="capitalize font-medium bg-pri-col text-white-col py-2 inline-block text-center w-full rounded-xl hover:brightness-95">get started</Link></li>
+                                <li><Link to="/login" className="nav-link-mobile">sign in</Link></li>
+                                <li><Link to="/register" className="capitalize font-medium bg-pri-col text-white-col py-2 inline-block text-center w-full rounded-xl hover:brightness-95">get started</Link></li>
                             </ul>
                         }
                     </nav>

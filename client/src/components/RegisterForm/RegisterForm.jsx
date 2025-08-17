@@ -1,13 +1,18 @@
 import { Link } from "react-router";
 
-const LoginForm = () => {
+const RegisterForm = () => {
     return (
         <form>
             <div>
-                <h2>Login</h2>
+                <h2>Create an account</h2>
                 <p>
-                    Provide your information to access your acount
+                    Enter your information to create an acount
                 </p>
+            </div>
+            
+            <div>
+                <label htmlFor="username">Fullname</label>
+                <input type="text" placeholder="John Doe" id="username" />
             </div>
 
             <div>
@@ -20,13 +25,13 @@ const LoginForm = () => {
                 <input type="password" id="password" />
             </div>
 
-            <button>Login</button>
+            <button>Register</button>
 
             <p>
-                Don't have an account? <Link to="/register">Sign up</Link>
+                Already have an account? <Link to="/login">Login</Link>
             </p>
         </form>
     )
 }
 
-export default LoginForm;
+export default RegisterForm;
