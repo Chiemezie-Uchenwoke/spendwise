@@ -61,7 +61,7 @@ const RegisterForm = () => {
                         />
                     </div>
 
-                    <button className="bg-pri-col text-white-col py-2 rounded-md font-semibold capitalize cursor-pointer">Register</button>
+                    <button className="bg-pri-col text-white-col py-2 rounded-md font-semibold capitalize cursor-pointer hover:brightness-95 duration-300 ease-in-ou">Register</button>
                 </form>
 
                 <div className="flex flex-col gap-4">
