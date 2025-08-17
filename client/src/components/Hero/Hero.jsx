@@ -17,7 +17,7 @@ const Hero = () => {
                     </p>
 
                     <div className="my-3 flex flex-col min-[400px]:flex-row min-[768px]:flex-col min-[840px]:flex-row gap-4">
-                        <Link to="#" 
+                        <Link to="/login" 
                           className="bg-white-col text-pri-col font-medium py-3 px-4 min-[400px]:px-6 min-[600px]:px-8 rounded-md capitalize hover:brightness-95 border-2 border-white-col text-center transition duration-300 ease-in-out"
                         >
                             start tracking
