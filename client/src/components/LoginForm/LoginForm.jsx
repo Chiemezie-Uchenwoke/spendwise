@@ -2,8 +2,8 @@ import { Link } from "react-router";
 
 const LoginForm = () => {
     return (
-        <div className="w-full h-screen flex justify-center items-center">
-            <div className="container max-w-[25rem] h-auto border border-black/20 bg-white-shade mx-auto my-8 py-8 px-4 rounded-md flex flex-col gap-6">
+        <div className="form-header">
+            <div className="form-wrapper">
                 <div className="flex flex-col gap-2">
                     <h2 className="capitalize font-bold text-base md:text-lg lg:text-xl">Login</h2>
 
@@ -45,7 +45,7 @@ const LoginForm = () => {
                         />
                     </div>
 
-                    <button className="bg-pri-col text-white-col py-2 rounded-md font-semibold capitalize">Login</button>
+                    <button className="bg-pri-col text-white-col py-2 rounded-md font-semibold capitalize cursor-pointer">Login</button>
                 </form>
 
                 <div className="flex flex-col gap-4">
