@@ -53,7 +53,7 @@ const LoginForm = () => {
                         Don't have an account? <Link to="/register" className="text-pri-col font-medium hover:brightness-90">Sign up</Link>
                     </p>
 
-                    <Link to="/" className="text-sec-col capitalize text-xs font-semibold hover:underline">back to home page</Link>
+                    <Link to="/" className="text-sec-col capitalize text-xs font-semibold hover:underline self-start">back to home page</Link>
                 </div>
             </div>
         </div>

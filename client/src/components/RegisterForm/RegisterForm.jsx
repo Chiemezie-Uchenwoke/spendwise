@@ -69,7 +69,7 @@ const RegisterForm = () => {
                         Already have an account? <Link to="/login" className="text-pri-col font-medium hover:brightness-90">Login</Link>
                     </p>
 
-                    <Link to="/" className="text-sec-col capitalize text-xs font-semibold hover:underline">back to home page</Link>
+                    <Link to="/" className="text-sec-col capitalize text-xs font-semibold hover:underline self-start">back to home page</Link>
                 </div>
             </div>
         </div>
