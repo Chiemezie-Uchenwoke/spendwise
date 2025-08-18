@@ -9,6 +9,7 @@ import transactionRouter from "./routes/transactionRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import cors from "cors";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
