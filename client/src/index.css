@@ -52,11 +52,11 @@ html{
 }
 
 .form-header{
-  @apply w-full h-screen flex justify-center items-center
+  @apply w-full h-screen mx-auto flex justify-center items-center 
 }
 
 .form-wrapper{
-  @apply container max-w-[25rem] h-auto border border-black/20 bg-white-shade mx-auto my-8 py-8 px-4 rounded-md flex flex-col gap-6
+  @apply w-[95%] max-w-[25rem] h-auto border border-black/20 bg-white-shade mx-auto my-8 py-8 px-4 rounded-md flex flex-col gap-6
 }
 
 .container{
