@@ -12,7 +12,9 @@ const LoginForm = () => {
                     </p>
                 </div>
 
-                <form className="flex flex-col gap-5">
+                <form 
+                  className="flex flex-col gap-5"
+                >
                     <div className="flex flex-col gap-2">
                         <label 
                         htmlFor="email" 

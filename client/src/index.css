@@ -52,7 +52,7 @@ html{
 }
 
 .form-header{
-  @apply w-full h-screen mx-auto flex justify-center items-center 
+  @apply w-full min-h-screen mx-auto py-4 flex justify-center items-center 
 }
 
 .form-wrapper{
