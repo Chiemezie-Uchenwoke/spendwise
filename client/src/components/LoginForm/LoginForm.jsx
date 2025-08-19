@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Notification from "../Notification/Notification";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const LoginForm = () => {
     const [isPasswordTouched, setIsPasswordTouched] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    const {setUser} = useAuth();
 
     // Handle form submit
     const handleSubmit = async (e) => {
@@ -46,6 +49,8 @@ const LoginForm = () => {
                 });
 
                 setIsPasswordTouched(false);
+
+                setUser(data.user);
 
                 setTimeout(() => {
                     navigate("/dashboard");

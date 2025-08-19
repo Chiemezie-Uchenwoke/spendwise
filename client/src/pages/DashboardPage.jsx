@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 const DashboardPage = () => {
+
     return (
         <>
             <p>This is the dashboard</p>
