@@ -48,7 +48,7 @@ const RegisterForm = () => {
 
         } catch (error) {
             console.error(error);
-            setNotification({message: "Something went wrong", type: "error"})
+            setNotification({message: "Something went wrong", type: "error"});
         } finally {
             setLoading(false);
         }
