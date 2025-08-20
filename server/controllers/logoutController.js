@@ -6,7 +6,7 @@ const logOutUser = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.error("Logout error:", err);
-            return res.status(500).json({ message: "Could not log out. Please try again." });
+            return res.status(500).json({ success: false, message: "Could not log out. Please try again." });
         }
 
         // Clear cookie from browser

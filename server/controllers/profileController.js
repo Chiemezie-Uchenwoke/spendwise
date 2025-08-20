@@ -8,7 +8,7 @@ const uploadProfileImage = async (req, res, next) => {
         const userId = req.user.userId;
 
         if (!req.file){
-            return res.status(400).json({message: "No file uploaded"});
+            return res.status(400).json({success: false, message: "No file uploaded"});
         }
 
         const filename = req.file.filename;

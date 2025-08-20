@@ -12,7 +12,10 @@ const registerUser = async (req, res, next) => {
     const existingUser = await User.findOne({ email: userEmail });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ 
+        success: false,
+        message: "User already exists" 
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);

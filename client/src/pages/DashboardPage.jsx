@@ -1,4 +1,4 @@
-import DashboardHeaderLg from "../components/Dashboard/DashboardHeaderLg";
+import DashboardHeaderLg from "../components/DashboardHeader/DashboardHeaderLg";
 
 const DashboardPage = () => {
 

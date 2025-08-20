@@ -15,7 +15,10 @@ const logInUser = async (req, res, next) => {
         const existingUser = await User.findOne({email: userEmail});
 
         if (!existingUser) {
-            return res.status(401).json({message: "Please register before login!"});
+            return res.status(401).json({
+                success: false, 
+                message: "Please register before login!"
+            });
         } 
 
         if (existingUser) {
@@ -39,7 +42,10 @@ const logInUser = async (req, res, next) => {
                     user
                 })
             } else {
-                return res.status(403).json({message: "Wrong password!"});
+                return res.status(403).json({
+                    success: false, 
+                    message: "Wrong password!"
+                });
             }
 
         }
