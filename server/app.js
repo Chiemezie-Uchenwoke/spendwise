@@ -21,7 +21,10 @@ const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -32,7 +35,7 @@ app.use(session({
   cookie: {
     secure: false,           // true = send cookie only over HTTPS
     httpOnly: true,          
-    maxAge: 1000 * 60 * 60 * 24 * 7   // cookie expires in 7 days (in ms)
+    maxAge: 1000 * 60 * 60 * 24 * 7 // cookie expires in 7 days (in ms)
   }
 }));
 
