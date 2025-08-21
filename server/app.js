@@ -10,6 +10,7 @@ import profileRouter from "./routes/profileRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -25,19 +26,23 @@ app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
-    secure: false,           // true = send cookie only over HTTPS
-    httpOnly: true,          
-    maxAge: 1000 * 60 * 60 * 24 * 7 // cookie expires in 7 days (in ms)
+    secure: process.env.NODE_ENV === 'production', // secure only in prod (HTTPS)
+    httpOnly: true,
+    // sameSite: process.env.NODE_ENV === "none", 
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
 }));
+app.use(cookieParser()); 
+
 
 app.use("/auth", authRouter);
 app.use("/transactions", transactionRouter);

@@ -12,10 +12,7 @@ const DashboardHeaderLg = () => {
             const url = "http://localhost:3000/profile/me";
             const response = await fetch(url, {
                 method: "GET",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                credentials: "include"
             });
 
             const data = await response.json();

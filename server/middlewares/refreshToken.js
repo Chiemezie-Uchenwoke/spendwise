@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET;
 
 const handleRefreshToken = (req, res) => {
-    const refreshToken = req.session.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
         return res.status(401).json({message: "No refresh token provided"});
@@ -18,7 +18,13 @@ const handleRefreshToken = (req, res) => {
         }
 
         const newToken = jwt.sign(user, jwtSecret, {expiresIn: "15m"});
-        req.session.accessToken = newToken;
+        
+        res.cookie("accessToken", newToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 15,
+        });
 
         return res.status(200).json({
             success: true,
