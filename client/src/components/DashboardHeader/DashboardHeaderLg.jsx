@@ -7,7 +7,11 @@ const DashboardHeaderLg = () => {
     const [userImage, setUserImage] = useState(null);
     const {user} = useAuth();
 
-    const fetchUserImage = async () => {
+    
+
+    useEffect(() => {
+
+        const fetchUserImage = async () => {
         try {
             const url = "http://localhost:3000/profile/me";
             const response = await fetch(url, {
@@ -29,11 +33,8 @@ const DashboardHeaderLg = () => {
         }
     }
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchUserImage();
-        }, 3000);
-        return () => clearTimeout(timer);
+    fetchUserImage();
+    
     }, []);
 
     return (
