@@ -8,27 +8,27 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchAuthUser = async () => {
+  const fetchAuthUser = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/auth/me`, {
-        method: "GET",
-        credentials: "include",
-      });
+        const res = await fetch(`${API_BASE}/auth/me`, {
+            method: "GET",
+            credentials: "include",
+        });
 
-      if (!res.ok) {
-        setUser(null);
-        return null;
-      }
+        if (!res.ok) {
+            setUser(null);
+            return null;
+        }
 
-      const data = await res.json();
+        const data = await res.json();
 
-    if (data.success) {
-        setUser(data.user); 
-        return data.user;
-    } else {
-        setUser(null);
-        return null;
-      }
+        if (data.success) {
+            setUser(data.user); 
+            return data.user;
+        } else {
+            setUser(null);
+            return null;
+        }
 
     } catch (err) {
         console.error("Error fetching auth user:", err);
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [])
 
   const fetchProfileImage = useCallback(async () => {
     try {
@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         fetchAuthUser();
-    }, []);
+    }, [fetchAuthUser]);
 
     return (
         <AuthContext.Provider
