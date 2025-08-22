@@ -1,14 +1,77 @@
-import { useState } from "react";
-import {AuthContext} from "./AuthContext";
+// src/context/AuthProvider.jsx
+import { useState, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
 
-const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+const API_BASE = "http://localhost:3000";
 
-    return (
-        <AuthContext.Provider value={{user, setUser}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export {AuthProvider};
+  const fetchAuthUser = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/auth/me`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        setUser(null);
+        return null;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        setUser(data.user); 
+        return data.user;
+      } else {
+        setUser(null);
+        return null;
+      }
+    } catch (err) {
+      console.error("Error fetching auth user:", err);
+      setUser(null);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProfileImage = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/profile/me`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      return data.success ? data.imageUrl : null;
+    } catch (err) {
+      console.error("Error fetching profile image:", err);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    fetchAuthUser();
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        fetchAuthUser,
+        fetchProfileImage,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthProvider };
