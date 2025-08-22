@@ -5,37 +5,21 @@ import { useAuth } from "../../hooks/useAuth";
 const DashboardHeaderLg = () => {
 
     const [userImage, setUserImage] = useState(null);
-    const {user} = useAuth();
+    const {user, fetchProfileImage} = useAuth();
 
     
 
     useEffect(() => {
 
         const fetchUserImage = async () => {
-        try {
-            const url = "http://localhost:3000/profile/me";
-            const response = await fetch(url, {
-                method: "GET",
-                credentials: "include"
-            });
+            const imageUrl = await fetchProfileImage();
+            
+            setUserImage(imageUrl);
+        };
 
-            const data = await response.json();
+        if (user) fetchUserImage();
 
-            if (!data.success){
-                console.warn("Could not fetch profile image:", data.message);
-                return;
-            } else {
-                setUserImage(data.imageUrl);
-                console.log(data.imageUrl)
-            }
-        } catch(err){
-            console.error(err);
-        }
-    }
-
-    fetchUserImage();
-    
-    }, []);
+    }, [user, fetchProfileImage]);
 
     return (
         <header className="border-b h-[4rem] border-black/20 hidden min-[1000px]:flex items-center">

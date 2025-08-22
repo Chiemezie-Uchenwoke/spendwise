@@ -17,7 +17,7 @@ const LoginForm = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const {setUser} = useAuth();
+    const {fetchAuthUser} = useAuth();
 
     // Handle form submit
     const handleSubmit = async (e) => {
@@ -51,18 +51,20 @@ const LoginForm = () => {
 
                 setIsPasswordTouched(false);
 
-                localStorage.setItem("user", JSON.stringify(data.user));
-                setUser(data.user);
+                const user = await fetchAuthUser();
+                    if (user) {
+                        setTimeout(() => {
+                        navigate("/dashboard");
+                    }, 3000);
+                }
 
-                setTimeout(() => {
-                    navigate("/dashboard");
-                }, 3000);
+                
 
             }
 
         } catch (err){
             console.error(err);
-            setNotification({message: "Something went wrong", type: "error"})
+            setNotification({message: "Network error. Please check your connection and try again.", type: "error"})
         } finally {
             setLoading(false);
         }
