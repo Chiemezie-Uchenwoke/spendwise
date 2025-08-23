@@ -65,7 +65,18 @@ const AuthProvider = ({ children }) => {
             credentials: "include",
         });
 
-      if (!response.ok) return null;
+      if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                const refreshed = await refreshUserToken();
+
+                if (refreshed?.success) {
+                    return await fetchProfileImage();
+                } else {
+                    navigate("/login");
+                    return null;
+                }
+            }
+      }
 
         const data = await response.json();
         return data.success ? data.imageUrl : null;
@@ -73,7 +84,7 @@ const AuthProvider = ({ children }) => {
         console.error("Error fetching profile image:", err);
         return null;
     }
-  } ,[]);
+  } ,[refreshUserToken, navigate]);
 
     useEffect(() => {
         fetchAuthUser();
