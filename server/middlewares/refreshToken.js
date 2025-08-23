@@ -6,7 +6,10 @@ const handleRefreshToken = (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        return res.status(401).json({message: "No refresh token provided"});
+        return res.status(401).json({
+            success: false,
+            message: "No refresh token provided"
+        });
     }
 
     try {
@@ -33,7 +36,10 @@ const handleRefreshToken = (req, res) => {
         });
     } catch (err){
         console.error(err);
-        return res.status(403).json({ message: "Invalid or expired refresh token" });
+        return res.status(403).json({ 
+            success: false,
+            message: "Invalid or expired refresh token" 
+        });
     }
 }
 

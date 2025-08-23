@@ -15,7 +15,10 @@ const authenticateUser = (req, res, next) => {
 
     } catch (err) {
         console.error("Invalid token:", err);
-        return res.status(403).json({ message: "Invalid or expired access token" });
+        return res.status(403).json({ 
+            success: false,
+            message: "Invalid or expired access token" 
+        });
     }
 }
 
