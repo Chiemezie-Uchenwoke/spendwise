@@ -2,9 +2,42 @@ import { MdDashboard } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/fa6";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const Dashboard = () => {
-    const {user} = useAuth();
+    const [loggingOut, setLoggingOut] = useState(false);
+    const {user, setUser} = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        setLoggingOut(true);
+        try {
+            const apiUrl = "http://localhost:3000/auth/logout";
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok){
+                setUser(null);
+                navigate("/");
+            } else {
+                console.error("Logout failed");
+                setUser(null);
+                navigate("/");
+            }
+        } catch (err){
+            console.error(err);
+            setUser(null)
+            navigate("/");
+        } finally {
+            setLoggingOut(false);
+        }
+    }
 
     return (
         <div className="w-full h-[calc(100vh-3.8rem)] min-[1000px]:h-[calc(100vh-4rem)] relative ">
@@ -54,9 +87,15 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <button className="dashboard-btn">
+                    <button 
+                        className="dashboard-btn"
+                        onClick={handleLogout}
+                        disabled={loggingOut}
+                    >
                         <FaArrowRightFromBracket />
-                        log out
+                        {
+                            loggingOut ? "Logging out..." : "log out"
+                        }
                     </button>
                 </aside>
 

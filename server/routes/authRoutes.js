@@ -2,7 +2,7 @@ import express from "express";
 import { registerUser } from "../controllers/registerController.js";
 import { logInUser } from "../controllers/loginController.js";
 import { handleRefreshToken } from "../middlewares/refreshToken.js";
-import { logOutUser } from "../controllers/logOutController.js";
+import { logOutUser } from "../controllers/logoutController.js";
 import { authenticateUser } from "../middlewares/authenticateJwt.js";
 import getUser from "../controllers/userController.js";
 
