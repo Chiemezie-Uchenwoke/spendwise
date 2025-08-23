@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
             credentials: "include",
         });
 
-        if (!response.ok) {
+        /* if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 const refreshed = await refreshUserToken();
 
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
 
             setUser(null);
             return null;
-        }
+        } */
 
         const data = await response.json();
 
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [refreshUserToken, navigate]);
+  }, []);
 
   const fetchProfileImage = useCallback(async () => {
     try {

@@ -3,8 +3,9 @@ import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/f
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Notification from "../Notification/Notification";
+import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -12,8 +13,24 @@ const Dashboard = () => {
         message: "",
         type: ""
     });
-    const {user, setUser} = useAuth();
+    const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
+    const refreshUserToken = useRefreshUserToken();
+
+    useEffect(() => {
+        const tryRefresh = async () => {
+            if (!user) {
+                const refreshed = await refreshUserToken();
+                if (refreshed?.success) {
+                    await fetchAuthUser();
+            } else {
+                    setUser(null);
+                    navigate("/login", { replace: true });
+                }
+            }
+        };
+        tryRefresh();
+    }, [user, refreshUserToken, fetchAuthUser, setUser, navigate]);
 
     const finalizeLogout = () => {
         setUser(null);
