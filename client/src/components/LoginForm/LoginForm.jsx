@@ -64,7 +64,7 @@ const LoginForm = () => {
 
         } catch (err){
             console.error(err);
-            setNotification({message: "Network error. Please check your connection and try again.", type: "error"})
+            setNotification({message: "Network error. Please check your connection and try again.", type: "error"});
         } finally {
             setLoading(false);
         }

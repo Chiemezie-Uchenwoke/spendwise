@@ -4,11 +4,21 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import Notification from "../Notification/Notification";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
+    const [notification, setNotification] = useState({
+        message: "",
+        type: ""
+    });
     const {user, setUser} = useAuth();
     const navigate = useNavigate();
+
+    const finalizeLogout = () => {
+        setUser(null);
+        navigate("/login");
+    };
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -23,17 +33,25 @@ const Dashboard = () => {
             });
 
             if (response.ok){
-                setUser(null);
-                navigate("/");
+                setNotification({
+                    message: "Log Out Successful!",
+                    type: "success"
+                })
+                
+                setTimeout(() => {
+                    finalizeLogout();
+                }, 3000);
             } else {
                 console.error("Logout failed");
-                setUser(null);
-                navigate("/");
+                setNotification({
+                    message: "Couldn't log out",
+                    type: "error"
+                });
             }
         } catch (err){
             console.error(err);
-            setUser(null)
-            navigate("/");
+            setNotification({message: "Network error. Please check your connection and try again.", type: "error"});
+
         } finally {
             setLoggingOut(false);
         }
@@ -41,6 +59,12 @@ const Dashboard = () => {
 
     return (
         <div className="w-full h-[calc(100vh-3.8rem)] min-[1000px]:h-[calc(100vh-4rem)] relative ">
+            <Notification 
+                message={notification.message}
+                type={notification.type}
+                onClose={() => setNotification({message: "", type: ""})}
+            />
+
             <div className="w-full h-full flex gap-4">
                 <aside 
                     className="w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full shadow-lg absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 flex flex-col justify-between p-3 z-20 bg-white-col overflow-y-auto"

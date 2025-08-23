@@ -19,8 +19,6 @@ const AuthProvider = ({ children }) => {
             credentials: "include",
         });
 
-        console.log(response);
-
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 const refreshed = await refreshUserToken();

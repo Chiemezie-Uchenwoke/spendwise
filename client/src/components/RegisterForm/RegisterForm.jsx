@@ -48,7 +48,7 @@ const RegisterForm = () => {
 
         } catch (error) {
             console.error(error);
-            setNotification({message: "Something went wrong", type: "error"});
+            setNotification({message: "Network error. Please check your connection and try again.", type: "error"});
         } finally {
             setLoading(false);
         }
