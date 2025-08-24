@@ -23,7 +23,7 @@ const Notification = ({message, type, onClose}) => {
     }
 
     return (
-        <div className={`w-fit max-w-60 px-4 py-2 fixed bottom-5 right-5 rounded-md shadow-md transition-opacity ${styles[type]}`}>
+        <div className={`w-fit max-w-60 px-4 py-2 fixed bottom-10 right-5 rounded-md shadow-md transition-opacity ${styles[type]}`}>
             <p className="text-sm">{message}</p>
         </div>
     )
