@@ -1,6 +1,7 @@
 import { MdDashboard } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/fa6";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
@@ -97,8 +98,8 @@ const Dashboard = () => {
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <button className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95">
-                                add transaction
+                            <button className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center">
+                                <IoMdAdd className="text-lg" /> add transaction
                             </button>
 
                             <h4 className="text-sm capitalize flex items-center gap-2 text-pri-col bg-pri-col/10 py-2 px-4 rounded-md text-center select-none">
