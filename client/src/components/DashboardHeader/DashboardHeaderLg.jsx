@@ -23,7 +23,7 @@ const DashboardHeaderLg = () => {
 
     return (
         <header className="border-b h-[4rem] border-black/20 hidden min-[1000px]:flex items-center">
-            <div className="container flex items-center justify-between">
+            <div className="w-full px-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <img 
                         src={spendwiseLogo} 
