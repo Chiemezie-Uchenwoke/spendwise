@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import Notification from "../Notification/Notification";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
+import { useToggle } from "../../hooks/useToggle";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
+    const {isSidebarOpen} = useToggle();
 
     useEffect(() => {
         const tryRefresh = async () => {
@@ -85,49 +87,49 @@ const Dashboard = () => {
 
             <div className="w-full h-full flex gap-4">
                 <aside 
-                    className="w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full shadow-lg absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 flex flex-col justify-between p-3 z-20 bg-white-col overflow-y-auto"
-                >
-                    <div className="flex flex-col gap-8">   
-                        <div className="flex flex-col gap-1">
-                            <h2 className="font-bold text-sm">Welcome</h2>
-                            <p className="text-sm capitalize">
-                                {
-                                    user ? user?.username : null
-                                }
-                            </p>
+                    className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white-col overflow-y-auto`}
+                    >
+                        <div className="flex flex-col gap-8">   
+                            <div className="flex flex-col gap-1">
+                                <h2 className="font-bold text-sm">Welcome</h2>
+                                <p className="text-sm capitalize">
+                                    {
+                                        user ? user?.username : null
+                                    }
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                                <button className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center">
+                                    <IoMdAdd className="text-lg" /> add transaction
+                                </button>
+
+                                <h4 className="text-sm capitalize flex items-center gap-2 text-pri-col bg-pri-col/10 py-2 px-4 rounded-md text-center select-none">
+                                    <MdDashboard className="text-pri-col" /> 
+                                    dashboard
+                                </h4>
+
+                                <button className="dashboard-btn">
+                                    <FaUpload />
+                                    add profile image
+                                </button>
+
+                                <button className="dashboard-btn">
+                                    <FaArrowTrendUp />
+                                    transactions
+                                </button>
+
+                                <button className="dashboard-btn">
+                                    <FaArrowDown />
+                                    income
+                                </button>
+
+                                <button className="dashboard-btn">
+                                    <FaArrowUp />
+                                    expense
+                                </button>
+                            </div>
                         </div>
-
-                        <div className="flex flex-col gap-3">
-                            <button className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center">
-                                <IoMdAdd className="text-lg" /> add transaction
-                            </button>
-
-                            <h4 className="text-sm capitalize flex items-center gap-2 text-pri-col bg-pri-col/10 py-2 px-4 rounded-md text-center select-none">
-                                <MdDashboard className="text-pri-col" /> 
-                                dashboard
-                            </h4>
-
-                            <button className="dashboard-btn">
-                                <FaUpload />
-                                add profile image
-                            </button>
-
-                            <button className="dashboard-btn">
-                                <FaArrowTrendUp />
-                                transactions
-                            </button>
-
-                            <button className="dashboard-btn">
-                                <FaArrowDown />
-                                income
-                            </button>
-
-                            <button className="dashboard-btn">
-                                <FaArrowUp />
-                                expense
-                            </button>
-                        </div>
-                    </div>
 
                     <button 
                         className="dashboard-btn"

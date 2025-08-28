@@ -2,10 +2,10 @@ import { useState } from "react";
 import { ToggleContext } from "./ToggleContext";
 
 const ToggleProvider = ({children}) => {
-    const [toggle, setToggle] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <ToggleContext.Provider value={{toggle, setToggle}}>
+        <ToggleContext.Provider value={{isSidebarOpen, setIsSidebarOpen}}>
             {children}
         </ToggleContext.Provider>
     )
