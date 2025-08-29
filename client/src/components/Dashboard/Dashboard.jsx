@@ -1,6 +1,6 @@
 import { MdDashboard } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/fa6";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaWallet } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Notification from "../Notification/Notification";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 import { useToggle } from "../../hooks/useToggle";
+import { TbMoneybag } from "react-icons/tb";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -143,8 +144,45 @@ const Dashboard = () => {
                     </button>
                 </aside>
 
-                <div className="w-full min-[900px]:w-[75%] ">
-                    <p>Data</p>
+                <div className="w-full min-[900px]:w-[75%] p-4">
+                    <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
+                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                            <div className="flex items-center gap-2">
+                                <span 
+                                    className="w-8 h-8 border border-black/20 bg-green-400/10 flex items-center justify-center rounded"
+                                >
+                                    <FaArrowDown className="text-green-600" />
+                                </span>
+                                <p className="font-medium">Income</p>
+                            </div>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 3500</p>
+                        </div>
+
+                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                            <div className="flex items-center gap-2">
+                                <span
+                                    className="w-8 h-8 border border-black/20 bg-red-300/30 flex items-center justify-center rounded"
+                                >
+                                    <FaArrowUp className="text-red-500" />
+                                </span>
+                                <p className="font-medium">Expense</p>
+                            </div>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 1500</p>
+                        </div>
+
+                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
+                            <div className="flex items-center gap-2">
+                                <span
+                                    className="w-8 h-8 border border-black/20 bg-pri-col/90 flex items-center justify-center rounded"
+                                >
+                                    <TbMoneybag className="text-lg text-white-col" />
+                                </span>
+                                <p className="font-medium">Balance</p>
+                            </div>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 1500</p>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
