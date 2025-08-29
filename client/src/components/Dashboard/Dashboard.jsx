@@ -56,7 +56,8 @@ const Dashboard = () => {
             const result = await fetchAllTransactions();
             if (result.success){
                 const allTransaction = result.userTransactions;
-                setTansactions(allTransaction);
+                const recentTransactions = allTransaction.slice(0, 9);
+                setTansactions(recentTransactions);
 
                 const incomeArray = allTransaction.filter(t => t.type === "income");
                 const income = incomeArray.map(income => Number(income.amount));
@@ -170,7 +171,7 @@ const Dashboard = () => {
 
                                 <button className="dashboard-btn">
                                     <FaArrowTrendUp />
-                                    transactions
+                                    all transactions
                                 </button>
 
                                 <button className="dashboard-btn">
