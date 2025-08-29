@@ -55,7 +55,7 @@ const Dashboard = () => {
         try {
             const result = await fetchAllTransactions();
             if (result.success){
-                const allTransaction = result.userTransactions;
+                const allTransaction = result.userTransactions.reverse();
                 const recentTransactions = allTransaction.slice(0, 9);
                 setTansactions(recentTransactions);
 
