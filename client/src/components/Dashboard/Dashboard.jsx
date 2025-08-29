@@ -9,6 +9,7 @@ import Notification from "../Notification/Notification";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 import { useToggle } from "../../hooks/useToggle";
 import { TbMoneybag } from "react-icons/tb";
+import { fetchAllTransactions } from "../../services/transaction";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -16,6 +17,9 @@ const Dashboard = () => {
         message: "",
         type: ""
     });
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [totalExpense, setTotalExpense] = useState(0);
+    const [balance, setBalance] = useState(0);
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -40,6 +44,37 @@ const Dashboard = () => {
         setUser(null);
         navigate("/login");
     };
+
+    const handleTransactions = async () => {
+        try {
+            const result = await fetchAllTransactions();
+            if (result.success){
+                const allTransaction = result.userTransactions;
+
+                const incomeArray = allTransaction.filter(t => t.type === "income");
+                const income = incomeArray.map(income => Number(income.amount));
+                const totalIncome = income.reduce((acc, e) => acc + e, 0);
+                console.log(typeof totalIncome)
+                setTotalIncome(totalIncome);
+
+                const expenseArray = allTransaction.filter(t => t.type === "expense");
+                const expense = expenseArray.map(expense => Number(expense.amount));
+                const totalExpense = expense.reduce((acc, value) => acc + value, 0);
+                setTotalExpense(totalExpense);
+                
+                const balance = totalIncome - totalExpense;
+                setBalance(balance);
+            }
+        } catch (err){
+            console.error(err);
+            return null;
+        }
+
+    }
+     
+    useEffect(() => {
+        handleTransactions();
+    }, []);
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -155,7 +190,7 @@ const Dashboard = () => {
                                 </span>
                                 <p className="font-medium">Income</p>
                             </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 3500</p>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome}</p>
                         </div>
 
                         <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
@@ -167,7 +202,7 @@ const Dashboard = () => {
                                 </span>
                                 <p className="font-medium">Expense</p>
                             </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 1500</p>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense} </p>
                         </div>
 
                         <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
@@ -179,7 +214,7 @@ const Dashboard = () => {
                                 </span>
                                 <p className="font-medium">Balance</p>
                             </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> 1500</p>
+                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance} </p>
                         </div>
 
                     </div>
