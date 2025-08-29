@@ -211,7 +211,7 @@ const Dashboard = () => {
                                     </span>
                                     <p className="font-medium">Income</p>
                                 </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome}</p>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome.toLocaleString()}</p>
                             </div>
 
                             <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
@@ -223,7 +223,7 @@ const Dashboard = () => {
                                     </span>
                                     <p className="font-medium">Expense</p>
                                 </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense} </p>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense.toLocaleString()} </p>
                             </div>
 
                             <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
@@ -235,7 +235,7 @@ const Dashboard = () => {
                                     </span>
                                     <p className="font-medium">Balance</p>
                                 </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance} </p>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance.toLocaleString()} </p>
                             </div>
 
                         </div>
@@ -267,7 +267,7 @@ const Dashboard = () => {
 
                                 <p className="flex gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
                                     <span>{totalTransaction} </span>
-                                    <span>{totalTransaction.length === 1 ? "result" : "results"}</span>
+                                    <span>{totalTransaction === 1 ? "result" : "results"}</span>
                                 </p>
                             </div>
 
@@ -305,7 +305,7 @@ const Dashboard = () => {
                                                                 t?.type === "income" ? "+" : "-"
                                                             }
                                                         </span>
-                                                        <span> {t?.amount} </span>
+                                                        <span> {t?.amount.toLocaleString()} </span>
                                                     </p>
 
                                                     <p className={`${t?.type === "income" ? "bg-green-300/30" : "bg-red-300/40"} text-xs flex justify-center items-center capitalize`}>
