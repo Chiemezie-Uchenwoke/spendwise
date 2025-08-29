@@ -22,7 +22,7 @@ const DashboardHeaderLg = () => {
     }, [user, fetchProfileImage]);
 
     return (
-        <header className="border-b h-[4rem] border-black/20 hidden min-[1000px]:flex items-center">
+        <header className="border-b h-[4rem] border-black/20 bg-white-col hidden min-[1000px]:flex items-center sticky top-0 z-50">
             <div className="w-full px-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <img 

@@ -23,6 +23,9 @@ const Dashboard = () => {
     const [balance, setBalance] = useState(0);
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [isRecentTransaction, setIsRecentTransaction] = useState(true);
+    const [totalTransaction, setTotalTransaction] = useState(0);
+    const [transactions, setTansactions] = useState([]);
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -53,6 +56,7 @@ const Dashboard = () => {
             const result = await fetchAllTransactions();
             if (result.success){
                 const allTransaction = result.userTransactions;
+                setTansactions(allTransaction);
 
                 const incomeArray = allTransaction.filter(t => t.type === "income");
                 const income = incomeArray.map(income => Number(income.amount));
@@ -67,6 +71,9 @@ const Dashboard = () => {
                 
                 const balance = totalIncome - totalExpense;
                 setBalance(balance);
+
+                const totalTransaction = allTransaction.length;
+                setTotalTransaction(totalTransaction);
             }
         } catch (err){
             console.error(err);
@@ -78,6 +85,11 @@ const Dashboard = () => {
     useEffect(() => {
         handleTransactions();
     }, []);
+
+    const handleAddTransaction = () => {
+        setIsTransactionModalOpen(true);
+        setIsRecentTransaction(false);
+    }
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -139,7 +151,10 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex flex-col gap-3">
-                                <button className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center">
+                                <button 
+                                    className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center"
+                                    onClick={handleAddTransaction}
+                                >
                                     <IoMdAdd className="text-lg" /> add transaction
                                 </button>
 
@@ -183,50 +198,128 @@ const Dashboard = () => {
                 </aside>
 
                 {/* Main dashboard contents */}
-                <div className="w-full min-[900px]:w-[75%] p-4 flex flex-col gap-6 relative">
-                    <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
-                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
-                            <div className="flex items-center gap-2">
-                                <span 
-                                    className="w-8 h-8 border border-black/20 bg-green-400/10 flex items-center justify-center rounded"
-                                >
-                                    <FaArrowDown className="text-green-600" />
-                                </span>
-                                <p className="font-medium">Income</p>
+                <div className="w-full h-full overflow-y-scroll min-[900px]:w-[75%] p-4 flex flex-col gap-6 relative">
+                    <div className="w-full flex flex-col gap-3">
+                        <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
+                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                                <div className="flex items-center gap-2">
+                                    <span 
+                                        className="w-8 h-8 border border-black/20 bg-green-400/10 flex items-center justify-center rounded"
+                                    >
+                                        <FaArrowDown className="text-green-600" />
+                                    </span>
+                                    <p className="font-medium">Income</p>
+                                </div>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome}</p>
                             </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome}</p>
+
+                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className="w-8 h-8 border border-black/20 bg-red-300/30 flex items-center justify-center rounded"
+                                    >
+                                        <FaArrowUp className="text-red-500" />
+                                    </span>
+                                    <p className="font-medium">Expense</p>
+                                </div>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense} </p>
+                            </div>
+
+                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className="w-8 h-8 border border-black/20 bg-pri-col/90 flex items-center justify-center rounded"
+                                    >
+                                        <TbMoneybag className="text-lg text-white-col" />
+                                    </span>
+                                    <p className="font-medium">Balance</p>
+                                </div>
+                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance} </p>
+                            </div>
+
                         </div>
 
-                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
-                            <div className="flex items-center gap-2">
-                                <span
-                                    className="w-8 h-8 border border-black/20 bg-red-300/30 flex items-center justify-center rounded"
-                                >
-                                    <FaArrowUp className="text-red-500" />
-                                </span>
-                                <p className="font-medium">Expense</p>
-                            </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense} </p>
-                        </div>
-
-                        <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
-                            <div className="flex items-center gap-2">
-                                <span
-                                    className="w-8 h-8 border border-black/20 bg-pri-col/90 flex items-center justify-center rounded"
-                                >
-                                    <TbMoneybag className="text-lg text-white-col" />
-                                </span>
-                                <p className="font-medium">Balance</p>
-                            </div>
-                            <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance} </p>
-                        </div>
-
+                        <button 
+                            className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex md:hidden items-center gap-2 justify-center"
+                            onClick={handleAddTransaction}
+                        >
+                            <IoMdAdd className="text-lg" /> add transaction
+                        </button>
                     </div>
 
                     <TransactionModal 
                         mode={isEditing ? "edit" : "add"}
                         isOpen={isTransactionModalOpen}
+                        onClose={() => {
+                            setIsTransactionModalOpen(false);
+                            setIsRecentTransaction(true);
+                        }}
                     />
+
+                    {
+                        isRecentTransaction &&
+                        <div className="w-full flex flex-col gap-3">
+                            <div className="flex justify-between">
+                                <h2 className="capitalize font-semibold">
+                                    recent transactions
+                                </h2>
+
+                                <p className="flex gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
+                                    <span>{totalTransaction} </span>
+                                    <span>{totalTransaction.length === 1 ? "result" : "results"}</span>
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col gap-5">
+                                {
+                                    transactions.map((t) => {
+                                        return (
+                                            <div 
+                                                key={t?._id}
+                                                className="flex justify-between"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 ${t?.type === "income" ? "bg-green-400/10" : "bg-red-500/10"} flex items-center justify-center rounded`}>
+                                                        {
+                                                            t?.type === "income" ? 
+                                                            <FaArrowDown className="text-green-600" /> : <FaArrowUp className="text-red-600" />
+                                                        }
+                                                    </span>
+                                                    <div>
+                                                        <p className="capitalize text-sm">{t?.description}</p>
+                                                        <p className="text-xs opacity-50">
+                                                            {new Date(t?.date).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric"
+                                                            })}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="">
+                                                    <p className={`${t?.type === "income" ? "text-green-600" : "text-red-500"} font-medium` }>
+                                                        <span>
+                                                            {
+                                                                t?.type === "income" ? "+" : "-"
+                                                            }
+                                                        </span>
+                                                        <span> {t?.amount} </span>
+                                                    </p>
+
+                                                    <p className={`${t?.type === "income" ? "bg-green-300/30" : "bg-red-300/40"} text-xs flex justify-center items-center capitalize`}>
+                                                        {
+                                                            t?.type === "income" ? "income" : "expense"
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

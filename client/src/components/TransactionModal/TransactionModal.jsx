@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import getTransactionCategory from "../../services/category";
 
-const TransactionModal = (isOpen, onClose, onSubmit, defaultValues={}, mode="add") => {
+const TransactionModal = ({isOpen, onClose, mode="add"}) => {
 
+    const [categories, setCategories] = useState([]); 
     const [formData, setFormData] = useState({
         amount: "",
         type: "",
@@ -11,11 +13,36 @@ const TransactionModal = (isOpen, onClose, onSubmit, defaultValues={}, mode="add
         date: ""
     });
 
+    const fetchCategory = async () => {
+        try {
+            const result = await getTransactionCategory();
+
+            if (result.success){
+                const categories = result.categories;
+                setCategories(categories);
+            }
+
+        } catch (err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    useEffect(() => {
+        fetchCategory();
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onclose();
+    }
+
     if (!isOpen) return null;
+
 // backdrop-blur-sm bg-black/40 absolute inset-0 flex items-center justify-center
     return (
         <div className="w-full ">
-            <div className="w-full max-w-[35rem] mx-auto border border-black/30 shadow-xs rounded-md py-8 px-4 flex flex-col gap-4">
+            <div className="w-full max-w-[35rem] mx-auto bg-white/70 border border-black/30 shadow-xs rounded-md py-8 px-4 flex flex-col gap-6">
                 <div className="flex justify-between">
                     <h2
                         className="font-bold"
@@ -25,13 +52,15 @@ const TransactionModal = (isOpen, onClose, onSubmit, defaultValues={}, mode="add
 
                     <button
                         className="flex items-center justify-center w-[1.8rem] h-[1.8rem] border border-black/30 rounded bg-white-shade hover:brightness-95 duration-100 cursor-pointer"
+                        onClick={onClose}
                     >
                         <IoMdClose />
                     </button>
                 </div>
 
                 <form 
-                    className="flex flex-col gap-4"
+                    className="flex flex-col gap-8"
+                    onSubmit={handleSubmit}
                 >
                     <div className="flex flex-col gap-2">
                         <label htmlFor="amount" className="capitalize font-medium text-sm">amount</label>
@@ -60,9 +89,61 @@ const TransactionModal = (isOpen, onClose, onSubmit, defaultValues={}, mode="add
                         </select>
                     </div>
 
-                    <div>
-                        
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="categoryId" className="capitalize font-medium text-sm">Select Category</label>
+                        <select 
+                            name="categoryId" 
+                            id="categoryId"
+                            value={formData.categoryId}
+                            onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
+                            className="border border-black/30 px-2 h-10 rounded-md"
+                        >
+                            {
+                                categories.map((catg) => {
+                                    return(
+                                        <>
+                                            <option 
+                                                key={catg?._id}
+                                                value={catg?._id}
+                                                className="outline-0"
+                                            >
+                                                {catg.name}
+                                            </option>
+                                        </>
+                                    )
+                                })
+                            }
+                        </select>
                     </div>
+
+                    <div className="flex flex-col gap-2">
+                            <label htmlFor="description" className="capitalize font-medium text-sm">description</label>
+                            <input 
+                                type="text"
+                                placeholder="Description" 
+                                value={formData.description}
+                                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                                className="border border-black/30 px-2 h-10 rounded-md"
+                            />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="date" className="capitalize font-medium text-sm">Transaction date</label>
+                        <input 
+                            type="date" 
+                            placeholder="Choose Date"
+                            value={formData.date}
+                            onChange={(e) => setFormData({...formData, date: e.target.value})}
+                            className="border border-black/30 px-2 h-10 rounded-md"
+                        />
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        className="bg-pri-col/90 hover:bg-pri-col duration-300 text-white-col py-2 rounded-md cursor-pointer capitalize font-semibold text-base"
+                    >
+                        submit
+                    </button>
                 </form>
             </div>
         </div>
