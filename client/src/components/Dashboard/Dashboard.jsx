@@ -53,7 +53,7 @@ const Dashboard = () => {
 
                 const incomeArray = allTransaction.filter(t => t.type === "income");
                 const income = incomeArray.map(income => Number(income.amount));
-                const totalIncome = income.reduce((acc, e) => acc + e, 0);
+                const totalIncome = income.reduce((acc, value) => acc + value, 0);
                 console.log(typeof totalIncome)
                 setTotalIncome(totalIncome);
 
