@@ -10,6 +10,7 @@ import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 import { useToggle } from "../../hooks/useToggle";
 import { TbMoneybag } from "react-icons/tb";
 import { fetchAllTransactions } from "../../services/transaction";
+import TransactionModal from "../TransactionModal/TransactionModal";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -20,6 +21,8 @@ const Dashboard = () => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
     const [balance, setBalance] = useState(0);
+    const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -179,7 +182,8 @@ const Dashboard = () => {
                     </button>
                 </aside>
 
-                <div className="w-full min-[900px]:w-[75%] p-4">
+                {/* Main dashboard contents */}
+                <div className="w-full min-[900px]:w-[75%] p-4 flex flex-col gap-6 relative">
                     <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
                         <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
                             <div className="flex items-center gap-2">
@@ -218,6 +222,11 @@ const Dashboard = () => {
                         </div>
 
                     </div>
+
+                    <TransactionModal 
+                        mode={isEditing ? "edit" : "add"}
+                        isOpen={isTransactionModalOpen}
+                    />
                 </div>
             </div>
         </div>

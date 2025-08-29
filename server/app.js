@@ -7,6 +7,7 @@ import { notFound } from "./middlewares/notfound.js";
 import session from "express-session";
 import transactionRouter from "./routes/transactionRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
+import { categoryRouter } from "./routes/categoryRoute.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
@@ -47,6 +48,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/transactions", transactionRouter);
 app.use("/profile", profileRouter);
+app.use("/categories", categoryRouter);
 
 app.use(notFound);
 app.use(errorHandler);
