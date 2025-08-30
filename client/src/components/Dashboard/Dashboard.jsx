@@ -259,7 +259,7 @@ const Dashboard = () => {
 
                     {
                         isRecentTransaction &&
-                        <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md">
+                        <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
                             <div className="flex justify-between px-4">
                                 <h2 className="capitalize font-semibold">
                                     recent transactions
