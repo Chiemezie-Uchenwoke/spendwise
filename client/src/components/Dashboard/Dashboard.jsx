@@ -259,8 +259,8 @@ const Dashboard = () => {
 
                     {
                         isRecentTransaction &&
-                        <div className="w-full flex flex-col gap-3">
-                            <div className="flex justify-between">
+                        <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md">
+                            <div className="flex justify-between px-4">
                                 <h2 className="capitalize font-semibold">
                                     recent transactions
                                 </h2>
@@ -271,16 +271,16 @@ const Dashboard = () => {
                                 </p>
                             </div>
 
-                            <div className="flex flex-col gap-5">
+                            <div className="flex flex-col">
                                 {
                                     transactions.map((t) => {
                                         return (
                                             <div 
                                                 key={t?._id}
-                                                className="flex justify-between"
+                                                className="flex justify-between items-center py-5 border-t border-black/5 px-4"
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 ${t?.type === "income" ? "bg-green-400/10" : "bg-red-500/10"} flex items-center justify-center rounded`}>
+                                                    <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 ${t?.type === "income" ? "bg-green-400/10" : "bg-red-500/10"} flex items-center justify-center rounded-[50%]`}>
                                                         {
                                                             t?.type === "income" ? 
                                                             <FaArrowDown className="text-green-600" /> : <FaArrowUp className="text-red-600" />
