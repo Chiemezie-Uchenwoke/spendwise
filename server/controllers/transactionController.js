@@ -3,6 +3,13 @@ import Transaction from "../models/transactionModel.js";
 const addTransaction = async (req, res, next) => {
     const {amount, type, categoryId, description, date} = req.body;
 
+    if (!amount || !type || !categoryId || !date) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required fields."
+        });
+    }
+
     try {
         const userId = req.user.userId;
 
@@ -17,7 +24,7 @@ const addTransaction = async (req, res, next) => {
 
         return res.status(200).json({
             success: true, 
-            message: "Transaction added successfully."
+            message: "Transaction was added successfully."
         })
     } catch(err) {
         next(err);

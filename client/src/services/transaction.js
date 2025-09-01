@@ -20,9 +20,9 @@ const addTransaction = async (formData) => {
     try {
         const response = await fetch(url, {
             method: "POST",
+            credentials: "include",
             headers: {
-                "Content-Type": "application/json",
-                credentials: "include"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(formData)
         });

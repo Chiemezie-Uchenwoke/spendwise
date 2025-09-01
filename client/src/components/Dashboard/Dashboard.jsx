@@ -2,6 +2,7 @@ import { MdDashboard } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/fa6";
 import { FaArrowDown, FaArrowUp, FaWallet } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
+import { LuClock2 } from "react-icons/lu";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
@@ -21,11 +22,16 @@ const Dashboard = () => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
     const [balance, setBalance] = useState(0);
+    const [isAccountSummary, setIsAccountSummary] = useState(true);
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isRecentTransaction, setIsRecentTransaction] = useState(true);
     const [totalTransaction, setTotalTransaction] = useState(0);
     const [transactions, setTansactions] = useState([]);
+    const [incomeTransaction, setIncomeTransaction] = useState([]);
+    const [expenseTransaction, setExpenseTransaction] = useState([]);
+    const [isIncome, setIsIncome] = useState(false);
+    const [isExpense, setIsExpense] = useState(false);
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -56,18 +62,19 @@ const Dashboard = () => {
             const result = await fetchAllTransactions();
             if (result.success){
                 const allTransaction = result.userTransactions.reverse();
-                const recentTransactions = allTransaction.slice(0, 9);
+                const recentTransactions = allTransaction.slice(0, 10);
                 setTansactions(recentTransactions);
 
                 const incomeArray = allTransaction.filter(t => t.type === "income");
                 const income = incomeArray.map(income => Number(income.amount));
                 const totalIncome = income.reduce((acc, value) => acc + value, 0);
-                console.log(typeof totalIncome)
+                setIncomeTransaction(incomeArray);
                 setTotalIncome(totalIncome);
 
                 const expenseArray = allTransaction.filter(t => t.type === "expense");
                 const expense = expenseArray.map(expense => Number(expense.amount));
                 const totalExpense = expense.reduce((acc, value) => acc + value, 0);
+                setExpenseTransaction(expenseArray);
                 setTotalExpense(totalExpense);
                 
                 const balance = totalIncome - totalExpense;
@@ -75,6 +82,7 @@ const Dashboard = () => {
 
                 const totalTransaction = allTransaction.length;
                 setTotalTransaction(totalTransaction);
+                
             }
         } catch (err){
             console.error(err);
@@ -86,11 +94,6 @@ const Dashboard = () => {
     useEffect(() => {
         handleTransactions();
     }, []);
-
-    const handleAddTransaction = () => {
-        setIsTransactionModalOpen(true);
-        setIsRecentTransaction(false);
-    }
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -151,10 +154,15 @@ const Dashboard = () => {
                                 </p>
                             </div>
 
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-2">
                                 <button 
                                     className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center"
-                                    onClick={handleAddTransaction}
+                                    onClick={() => {
+                                        setIsTransactionModalOpen(true);
+                                        setIsRecentTransaction(false);
+                                        setIsIncome(false);
+                                        setIsAccountSummary(false);
+                                    }}
                                 >
                                     <IoMdAdd className="text-lg" /> add transaction
                                 </button>
@@ -169,17 +177,46 @@ const Dashboard = () => {
                                     add profile image
                                 </button>
 
+                                <button 
+                                    className="dashboard-btn"
+                                    onClick={() => {
+                                        setIsRecentTransaction(true);
+                                        setIsIncome(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(true);
+                                    }}
+                                >
+                                    <LuClock2 />
+                                    recent 
+                                </button>
+
                                 <button className="dashboard-btn">
                                     <FaArrowTrendUp />
                                     all transactions
                                 </button>
 
-                                <button className="dashboard-btn">
+                                <button 
+                                    className="dashboard-btn"
+                                    onClick={() => {
+                                        setIsIncome(true);
+                                        setIsRecentTransaction(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(true);
+                                    }}
+                                >
                                     <FaArrowDown />
                                     income
                                 </button>
 
-                                <button className="dashboard-btn">
+                                <button 
+                                    className="dashboard-btn"
+                                    onClick={() => {
+                                        setIsIncome(false);
+                                        setIsRecentTransaction(false);
+                                        setIsExpense(true);
+                                        setIsAccountSummary(true);
+                                    }}
+                                >
                                     <FaArrowUp />
                                     expense
                                 </button>
@@ -200,63 +237,74 @@ const Dashboard = () => {
 
                 {/* Main dashboard contents */}
                 <div className="w-full h-full overflow-y-scroll min-[900px]:w-[75%] p-4 flex flex-col gap-6 relative">
-                    <div className="w-full flex flex-col gap-3">
-                        <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
-                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
-                                <div className="flex items-center gap-2">
-                                    <span 
-                                        className="w-8 h-8 border border-black/20 bg-green-400/10 flex items-center justify-center rounded"
-                                    >
-                                        <FaArrowDown className="text-green-600" />
-                                    </span>
-                                    <p className="font-medium">Income</p>
+                    {
+                        isAccountSummary && 
+                        <div className="w-full flex flex-col gap-3">
+                            <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 items-center">
+                                <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                                    <div className="flex items-center gap-2">
+                                        <span 
+                                            className="w-8 h-8 border border-black/20 bg-green-400/10 flex items-center justify-center rounded"
+                                        >
+                                            <FaArrowDown className="text-green-600" />
+                                        </span>
+                                        <p className="font-medium">Income</p>
+                                    </div>
+                                    <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome.toLocaleString()}</p>
                                 </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalIncome.toLocaleString()}</p>
+
+                                <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className="w-8 h-8 border border-black/20 bg-red-300/30 flex items-center justify-center rounded"
+                                        >
+                                            <FaArrowUp className="text-red-500" />
+                                        </span>
+                                        <p className="font-medium">Expense</p>
+                                    </div>
+                                    <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense.toLocaleString()} </p>
+                                </div>
+
+                                <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className="w-8 h-8 border border-black/20 bg-pri-col/90 flex items-center justify-center rounded"
+                                        >
+                                            <TbMoneybag className="text-lg text-white-col" />
+                                        </span>
+                                        <p className="font-medium">Balance</p>
+                                    </div>
+                                    <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance.toLocaleString()} </p>
+                                </div>
+
                             </div>
 
-                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3">
-                                <div className="flex items-center gap-2">
-                                    <span
-                                        className="w-8 h-8 border border-black/20 bg-red-300/30 flex items-center justify-center rounded"
-                                    >
-                                        <FaArrowUp className="text-red-500" />
-                                    </span>
-                                    <p className="font-medium">Expense</p>
-                                </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {totalExpense.toLocaleString()} </p>
-                            </div>
-
-                            <div className="flex flex-col gap-3 bg-white/70 border border-black/15 rounded-md py-6 px-3 col-start-1 col-span-2 row-start-2 row-end-3 sm:row-start-1 sm:row-end-2 sm:col-start-3 sm:col-span-1">
-                                <div className="flex items-center gap-2">
-                                    <span
-                                        className="w-8 h-8 border border-black/20 bg-pri-col/90 flex items-center justify-center rounded"
-                                    >
-                                        <TbMoneybag className="text-lg text-white-col" />
-                                    </span>
-                                    <p className="font-medium">Balance</p>
-                                </div>
-                                <p className="text-base flex items-center gap-2 sm:text-lg md:text-xl font-semibold"><FaWallet /> {balance.toLocaleString()} </p>
-                            </div>
-
+                            <button 
+                                className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex md:hidden items-center gap-2 justify-center"
+                                onClick={() => {
+                                    setIsTransactionModalOpen(true);
+                                    setIsRecentTransaction(false);
+                                    setIsIncome(false);
+                                    setIsAccountSummary(false);
+                                }}
+                            >
+                                <IoMdAdd className="text-lg" /> add transaction
+                            </button>
                         </div>
-
-                        <button 
-                            className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex md:hidden items-center gap-2 justify-center"
-                            onClick={handleAddTransaction}
-                        >
-                            <IoMdAdd className="text-lg" /> add transaction
-                        </button>
-                    </div>
+                    }
 
                     <TransactionModal 
                         mode={isEditing ? "edit" : "add"}
                         isOpen={isTransactionModalOpen}
-                        onClose={() => {
+                        onCloseModal={() => {
                             setIsTransactionModalOpen(false);
                             setIsRecentTransaction(true);
+                            setIsAccountSummary(true);
+                            handleTransactions();
                         }}
                     />
 
+                    {/* recent transaction */}
                     {
                         isRecentTransaction &&
                         <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
@@ -321,6 +369,122 @@ const Dashboard = () => {
                             </div>
                         </div>
                     }
+
+                    {/* income transactions */}
+                    {
+                        isIncome && 
+                        <div className="w-full flex flex-col  bg-white/70 py-4 rounded-md border border-black/10">
+
+                            <div className="flex justify-between px-4">
+                                <h2 className="capitalize font-semibold">
+                                    Income transactions
+                                </h2>
+
+                                <p className="flex gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
+                                    <span>{incomeTransaction.length} </span>
+                                    <span>{incomeTransaction === 1 ? "result" : "results"}</span>
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col">
+                                {
+                                    incomeTransaction.map((t) => {
+                                        return (
+                                            <div 
+                                                key={t?._id}
+                                                className="flex justify-between items-center py-5 border-t border-black/5 px-4"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 bg-green-400/10 flex items-center justify-center rounded-[50%]`}>
+                                                        <FaArrowDown className="text-green-600" />
+                                                    </span>
+                                                    <div>
+                                                        <p className="capitalize text-sm">{t?.description}</p>
+                                                        <p className="text-xs opacity-50">
+                                                            {new Date(t?.date).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric"
+                                                            })}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="">
+                                                    <p className={`text-green-600 font-medium` }>
+                                                        <span> + </span>
+                                                        <span> {t?.amount.toLocaleString()} </span>
+                                                    </p>
+                                                    <p className={`bg-green-300/30 text-xs flex justify-center items-center capitalize`}>
+                                                        {t?.type}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    {/* expense transaction */}
+                    {
+                        isExpense && 
+                        <div className="w-full flex flex-col  bg-white/70 py-4 rounded-md border border-black/10">
+
+                            <div className="flex justify-between px-4">
+                                <h2 className="capitalize font-semibold">
+                                    Expense transactions
+                                </h2>
+
+                                <p className="flex gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
+                                    <span>{expenseTransaction.length} </span>
+                                    <span>{expenseTransaction === 1 ? "result" : "results"}</span>
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col">
+                                {
+                                    expenseTransaction.map((t) => {
+                                        return (
+                                            <div 
+                                                key={t?._id}
+                                                className="flex justify-between items-center py-5 border-t border-black/5 px-4"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 bg-red-500/10 flex items-center justify-center rounded-[50%]`}>
+                                                        <FaArrowDown className="text-red-500" />
+                                                    </span>
+
+                                                    <div>
+                                                        <p className="capitalize text-sm">{t?.description}</p>
+                                                        <p className="text-xs opacity-50">
+                                                            {new Date(t?.date).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric"
+                                                            })}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="">
+                                                    <p className={`text-red-500 font-medium` }>
+                                                        <span> + </span>
+                                                        <span> {t?.amount.toLocaleString()} </span>
+                                                    </p>
+                                                    <p className={`bg-red-500/10 text-xs flex justify-center items-center capitalize`}>
+                                                        {t?.type}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>

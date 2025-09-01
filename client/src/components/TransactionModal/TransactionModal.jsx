@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import getTransactionCategory from "../../services/category";
+import { addTransaction } from "../../services/transaction";
+import Notification from "../Notification/Notification";
+import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 
-const TransactionModal = ({isOpen, onClose, mode="add"}) => {
+const TransactionModal = ({isOpen, onCloseModal, mode="add"}) => {
 
+    const [notification, setNotification] = useState({
+        message: "",
+        type: ""
+    });
     const [categories, setCategories] = useState([]); 
     const [formData, setFormData] = useState({
         amount: "",
@@ -12,6 +19,7 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
         description: "",
         date: ""
     });
+    const refreshUserToken = useRefreshUserToken();
 
     const fetchCategory = async () => {
         try {
@@ -32,9 +40,62 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
         fetchCategory();
     }, []);
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        if (isOpen) {
+            setNotification({ message: "", type: "" });
+        }
+    }, [isOpen]);
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onclose();
+
+        if (!formData.amount || !formData.categoryId || !formData.type || !formData.description || !formData.date){
+            setNotification({
+                message: "Missing required fields",
+                type: "info"
+            });
+            return;
+        }
+
+        try {
+            const result = await addTransaction(formData);
+
+            if (result.status === 401 || result.status === 403){
+                const refreshed = refreshUserToken();
+                if (refreshed) handleSubmit();
+            }
+
+            if (!result?.success){
+                setNotification({
+                    message: result.message,
+                    type: "error"
+                });
+            } else {
+                setNotification({
+                    message: result.message,
+                    type: "success"
+                });
+
+                setFormData({
+                    amount: "",
+                    type: "",
+                    categoryId: "",
+                    description: "",
+                    date: ""
+                });
+
+                
+            }
+        } catch(err){
+            console.error(err);
+            setNotification({message: "Network error. Please check your connection and try again.", type: "error"});
+        } finally {
+            setTimeout(() => {
+                onCloseModal();
+            }, 2000)
+        }
+        
     }
 
     if (!isOpen) return null;
@@ -42,6 +103,14 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
 // backdrop-blur-sm bg-black/40 absolute inset-0 flex items-center justify-center
     return (
         <div className="w-full ">
+            {
+                notification.message && 
+                <Notification  
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification({message: "", type: ""})}
+                />
+            }
             <div className="w-full max-w-[35rem] mx-auto bg-white/70 border border-black/30 shadow-xs rounded-md py-8 px-4 flex flex-col gap-6">
                 <div className="flex justify-between">
                     <h2
@@ -52,7 +121,7 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
 
                     <button
                         className="flex items-center justify-center w-[1.8rem] h-[1.8rem] border border-black/30 rounded bg-white-shade hover:brightness-95 duration-100 cursor-pointer"
-                        onClick={onClose}
+                        onClick={onCloseModal}
                     >
                         <IoMdClose />
                     </button>
@@ -99,9 +168,10 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
                             className="border border-black/30 px-2 h-10 rounded-md"
                         >
                             {
-                                categories.map((catg) => {
+                                categories.filter(catg => catg.type === formData.type)
+                                    .map((catg) => {
                                     return(
-                                        <>
+                                        
                                             <option 
                                                 key={catg?._id}
                                                 value={catg?._id}
@@ -109,7 +179,7 @@ const TransactionModal = ({isOpen, onClose, mode="add"}) => {
                                             >
                                                 {catg.name}
                                             </option>
-                                        </>
+                                        
                                     )
                                 })
                             }
