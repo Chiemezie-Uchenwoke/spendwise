@@ -1,5 +1,5 @@
 import { MdDashboard } from "react-icons/md";
-import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket } from "react-icons/fa6";
+import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket, FaFilter } from "react-icons/fa6";
 import { FaArrowDown, FaArrowUp, FaWallet } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { LuClock2 } from "react-icons/lu";
@@ -32,6 +32,7 @@ const Dashboard = () => {
     const [expenseTransaction, setExpenseTransaction] = useState([]);
     const [isIncome, setIsIncome] = useState(false);
     const [isExpense, setIsExpense] = useState(false);
+    const [isAllTransaction, setIsAllTransaction] = useState(false);
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -184,13 +185,25 @@ const Dashboard = () => {
                                         setIsIncome(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(true);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
                                     }}
                                 >
                                     <LuClock2 />
                                     recent 
                                 </button>
 
-                                <button className="dashboard-btn">
+                                <button 
+                                    className="dashboard-btn"
+                                    onClick={() => {
+                                        setIsAllTransaction(true);
+                                        setIsRecentTransaction(false);
+                                        setIsIncome(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(false);
+                                        setIsTransactionModalOpen(false);
+                                    }}
+                                >
                                     <FaArrowTrendUp />
                                     all transactions
                                 </button>
@@ -202,6 +215,8 @@ const Dashboard = () => {
                                         setIsRecentTransaction(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(true);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
                                     }}
                                 >
                                     <FaArrowDown />
@@ -215,6 +230,8 @@ const Dashboard = () => {
                                         setIsRecentTransaction(false);
                                         setIsExpense(true);
                                         setIsAccountSummary(true);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
                                     }}
                                 >
                                     <FaArrowUp />
@@ -286,6 +303,7 @@ const Dashboard = () => {
                                     setIsRecentTransaction(false);
                                     setIsIncome(false);
                                     setIsAccountSummary(false);
+                                    setIsAllTransaction(false);
                                 }}
                             >
                                 <IoMdAdd className="text-lg" /> add transaction
@@ -300,6 +318,7 @@ const Dashboard = () => {
                             setIsTransactionModalOpen(false);
                             setIsRecentTransaction(true);
                             setIsAccountSummary(true);
+                            setIsAllTransaction(false);
                             handleTransactions();
                         }}
                     />
@@ -482,6 +501,44 @@ const Dashboard = () => {
                                     })
                                 }
                             </div>
+                        </div>
+                    }
+
+                    {/* all transaction */}
+                    {
+                        isAllTransaction && 
+                        <div className="bg-white/70 p-4 flex flex-col gap-4">
+                            <h2 className="flex items-center-safe gap-2 capitalize font-semibold text-base">
+                                <span className="w-10 h-10 bg-pri-col rounded-md flex justify-center items-center"> <FaFilter className="text-white-col" /> </span>
+                                <span>filter transactions</span>
+                            </h2>
+
+                            <form 
+                                className=""
+                            >
+                                <div>
+                                    <div className="">
+                                        <label htmlFor="date-range">date range</label>
+
+                                        <div>
+                                            <input type="date" id="start-date" />
+                                            <input type="date" id="end-date" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="transaction-type">transaction type</label>
+
+                                        <div>
+                                            <input type="radio" name="transact-type" value="all" />
+                                            <input type="radio" name="transact-type" value="income" />
+                                            <input type="radio" name="transact-type" value="expense" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
                         </div>
                     }
 
