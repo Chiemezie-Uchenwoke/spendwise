@@ -27,7 +27,7 @@ const DashboardHeaderSm = () => {
 
     return (
         <header 
-            className="w-full h-[3.8rem] px-4 min-[1000px]:hidden flex justify-between items-center border-b border-black/20 sticky top-0"
+            className="w-full h-[3.8rem] px-4 min-[1000px]:hidden flex justify-between items-center border-b border-black/20 sticky top-0 bg-white/70"
         >
             <div className="h-full flex items-center gap-2">
                 <button 
