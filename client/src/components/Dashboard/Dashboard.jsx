@@ -3,6 +3,8 @@ import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket, FaFilter } from "rea
 import { FaArrowDown, FaArrowUp, FaWallet } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { LuClock2 } from "react-icons/lu";
+import { IoSearch } from "react-icons/io5";
+import { TbReload } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
@@ -507,39 +509,96 @@ const Dashboard = () => {
                     {/* all transaction */}
                     {
                         isAllTransaction && 
-                        <div className="bg-white/70 p-4 flex flex-col gap-4">
+                        <div className="bg-white/70 p-4 flex flex-col gap-4 border border-black/20 rounded-md w-full">
                             <h2 className="flex items-center-safe gap-2 capitalize font-semibold text-base">
                                 <span className="w-10 h-10 bg-pri-col rounded-md flex justify-center items-center"> <FaFilter className="text-white-col" /> </span>
                                 <span>filter transactions</span>
                             </h2>
 
                             <form 
-                                className=""
+                                className="w-full flex flex-col gap-6 sm:gap-4"
                             >
-                                <div>
-                                    <div className="">
-                                        <label htmlFor="date-range">date range</label>
-
-                                        <div>
-                                            <input type="date" id="start-date" />
-                                            <input type="date" id="end-date" />
-                                        </div>
+                                <div className="w-full flex flex-col sm:flex-row gap-4">
+                                    <div className="w-full sm:w-1/2 flex flex-col gap-1">
+                                        <label 
+                                            htmlFor="start-date"
+                                            className="capitalize font-medium text-sm"
+                                        >
+                                            start date
+                                        </label>
+                                        <input 
+                                            type="date" 
+                                            id="start-date"
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                        />
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="transaction-type">transaction type</label>
-
-                                        <div>
-                                            <input type="radio" name="transact-type" value="all" />
-                                            <input type="radio" name="transact-type" value="income" />
-                                            <input type="radio" name="transact-type" value="expense" />
-                                        </div>
+                                    <div className="w-full sm:w-1/2 flex flex-col gap-1">
+                                        <label 
+                                            htmlFor="end-date"
+                                            className="capitalize font-medium text-sm"
+                                        >
+                                            end date
+                                        </label>
+                                        <input 
+                                            type="date" 
+                                            id="end-date" 
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                        />
                                     </div>
                                 </div>
 
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <div className="w-full sm:w-1/2 flex flex-col gap-1">
+                                        <label 
+                                            htmlFor="transaction-type"
+                                            className="capitalize font-medium text-sm"
+                                        >
+                                            transaction type
+                                        </label>
+                                        <select id="trn-type" className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" >
+                                            <option value="">select</option>
+                                            <option value="all">all</option>
+                                            <option value="income">income</option>
+                                            <option value="expense">expense</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="w-full sm:w-1/2 flex flex-col gap-1">
+                                        <label 
+                                            htmlFor="category"
+                                            className="capitalize font-medium text-sm"
+                                        >
+                                            category
+                                        </label>
+                                        <select id="category" className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" >
+                                            <option value="">all category</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-4">
+                                    <button 
+                                        type="submit"
+                                        className="flex items-center gap-2 justify-center bg-pri-col text-white-col w-full sm:w-1/2 text-center rounded-md capitalize text-sm font-medium hover:brightness-110 duration-200 cursor-pointer py-2.5"
+                                    >
+                                        <IoSearch /> 
+                                        apply filters
+                                    </button>
+
+                                    <button 
+                                        type="reset"
+                                        className="flex items-center gap-2 justify-center bg-pri-col/5 text-black w-full sm:w-1/2 text-center rounded-md capitalize text-sm font-medium hover:brightness-40 duration-200 cursor-pointer py-2.5 border border-black/10"
+                                    >
+                                        <TbReload /> 
+                                        reset
+                                    </button>
+                                </div>
 
                             </form>
                         </div>
+
+                        
                     }
 
                 </div>
