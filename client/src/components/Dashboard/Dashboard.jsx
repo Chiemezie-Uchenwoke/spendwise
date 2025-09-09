@@ -163,6 +163,15 @@ const Dashboard = () => {
         fetchCategory();
     }, []);
 
+    const handleFilterFormReset = () => {
+        setFilterForm({
+            startDate: "",
+            endDate: "",
+            type: "",
+            categoryId: ""
+        });
+    }
+
     return (
         <div className="w-full h-[calc(100vh-3.8rem)] min-[1000px]:h-[calc(100vh-4rem)] relative ">
             <Notification 
@@ -173,7 +182,7 @@ const Dashboard = () => {
 
             <div className="w-full h-full flex gap-4">
                 <aside 
-                    className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white-col overflow-y-auto`}
+                    className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg min-[900px]:shadow-none absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white/70 overflow-y-auto`}
                     >
                         <div className="flex flex-col gap-8">   
                             <div className="flex flex-col gap-1">
@@ -557,7 +566,7 @@ const Dashboard = () => {
                                         <input 
                                             type="date" 
                                             id="start-date"
-                                            className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm outline-0" 
                                             value={filterForm.startDate}
                                             onChange={(e) => setFilterForm({...filterForm, startDate: e.target.value})}
                                         />
@@ -573,7 +582,7 @@ const Dashboard = () => {
                                         <input 
                                             type="date" 
                                             id="end-date" 
-                                            className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm outline-0" 
                                             value={filterForm.endDate}
                                             onChange={(e) => setFilterForm({...filterForm, endDate: e.target.value})}
                                         />
@@ -641,6 +650,7 @@ const Dashboard = () => {
                                     <button 
                                         type="reset"
                                         className="flex items-center gap-2 justify-center bg-pri-col/5 text-black w-full sm:w-1/2 text-center rounded-md capitalize text-sm font-medium hover:brightness-40 duration-200 cursor-pointer py-2.5 border border-black/10"
+                                        onClick={handleFilterFormReset}
                                     >
                                         <TbReload /> 
                                         reset
