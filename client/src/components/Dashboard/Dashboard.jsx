@@ -14,6 +14,7 @@ import { useToggle } from "../../hooks/useToggle";
 import { TbMoneybag } from "react-icons/tb";
 import { fetchAllTransactions } from "../../services/transaction";
 import TransactionModal from "../TransactionModal/TransactionModal";
+import getTransactionCategory from "../../services/category";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -35,6 +36,14 @@ const Dashboard = () => {
     const [isIncome, setIsIncome] = useState(false);
     const [isExpense, setIsExpense] = useState(false);
     const [isAllTransaction, setIsAllTransaction] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [filterForm, setFilterForm] = useState({
+        startDate: "",
+        endDate: "",
+        type: "",
+        categoryId: ""
+    });
+
     const {user, setUser, fetchAuthUser} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
@@ -134,6 +143,25 @@ const Dashboard = () => {
             setLoggingOut(false);
         }
     }
+
+    const fetchCategory = async () => {
+        try {
+            const result = await getTransactionCategory();
+
+            if (result.success){
+                const categories = result.categories;
+                setCategories(categories);
+            }
+
+        } catch (err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    useEffect(() => {
+        fetchCategory();
+    }, []);
 
     return (
         <div className="w-full h-[calc(100vh-3.8rem)] min-[1000px]:h-[calc(100vh-4rem)] relative ">
@@ -530,6 +558,8 @@ const Dashboard = () => {
                                             type="date" 
                                             id="start-date"
                                             className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                            value={filterForm.startDate}
+                                            onChange={(e) => setFilterForm({...filterForm, startDate: e.target.value})}
                                         />
                                     </div>
 
@@ -544,6 +574,8 @@ const Dashboard = () => {
                                             type="date" 
                                             id="end-date" 
                                             className="border border-black/20 h-8 rounded-md px-2 text-sm" 
+                                            value={filterForm.endDate}
+                                            onChange={(e) => setFilterForm({...filterForm, endDate: e.target.value})}
                                         />
                                     </div>
                                 </div>
@@ -556,7 +588,12 @@ const Dashboard = () => {
                                         >
                                             transaction type
                                         </label>
-                                        <select id="trn-type" className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" >
+                                        <select 
+                                            id="trn-type" 
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" 
+                                            value={filterForm.type}
+                                            onChange={(e) => setFilterForm({...filterForm, type: e.target.value})}
+                                        >
                                             <option value="">select</option>
                                             <option value="all">all</option>
                                             <option value="income">income</option>
@@ -571,8 +608,23 @@ const Dashboard = () => {
                                         >
                                             category
                                         </label>
-                                        <select id="category" className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" >
+                                        <select 
+                                            id="category" 
+                                            className="border border-black/20 h-8 rounded-md px-2 text-sm capitalize outline-0" 
+                                            value={filterForm.categoryId}
+                                            onChange={(e) => setFilterForm({...filterForm, categoryId: e.target.value})}
+                                        >
                                             <option value="">all category</option>
+                                            {
+                                                categories.filter((catg) => catg.type === filterForm.type)
+                                                .map((catg) => {
+                                                    return (
+                                                        <option key={catg._id} value={catg._id}>
+                                                            {catg.name}
+                                                        </option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
                                 </div>
@@ -598,7 +650,7 @@ const Dashboard = () => {
                             </form>
                         </div>
 
-                        
+
                     }
 
                 </div>

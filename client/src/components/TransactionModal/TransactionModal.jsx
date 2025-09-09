@@ -167,6 +167,7 @@ const TransactionModal = ({isOpen, onCloseModal, mode="add"}) => {
                             onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
                             className="border border-black/30 px-2 h-10 rounded-md"
                         >
+                            <option value="">Select</option>
                             {
                                 categories.filter(catg => catg.type === formData.type)
                                     .map((catg) => {
