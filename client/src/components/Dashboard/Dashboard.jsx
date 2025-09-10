@@ -1,6 +1,6 @@
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdDelete, MdEdit } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket, FaFilter } from "react-icons/fa6";
-import { FaArrowDown, FaArrowUp, FaWallet } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaWallet, FaList } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { LuClock2 } from "react-icons/lu";
 import { IoSearch } from "react-icons/io5";
@@ -31,6 +31,7 @@ const Dashboard = () => {
     const [isRecentTransaction, setIsRecentTransaction] = useState(true);
     const [totalTransaction, setTotalTransaction] = useState(0);
     const [transactions, setTansactions] = useState([]);
+    const [allTransactions, setAllTansactions] = useState([]);
     const [incomeTransaction, setIncomeTransaction] = useState([]);
     const [expenseTransaction, setExpenseTransaction] = useState([]);
     const [isIncome, setIsIncome] = useState(false);
@@ -76,6 +77,7 @@ const Dashboard = () => {
                 const allTransaction = result.userTransactions.reverse();
                 const recentTransactions = allTransaction.slice(0, 10);
                 setTansactions(recentTransactions);
+                setAllTansactions(allTransaction);
 
                 const incomeArray = allTransaction.filter(t => t.type === "income");
                 const income = incomeArray.map(income => Number(income.amount));
@@ -182,7 +184,7 @@ const Dashboard = () => {
 
             <div className="w-full h-full flex gap-4">
                 <aside 
-                    className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg min-[900px]:shadow-none absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white/70 overflow-y-auto`}
+                    className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg min-[900px]:shadow-none absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white-col min-[900px]:bg-white/70 overflow-y-auto`}
                     >
                         <div className="flex flex-col gap-8">   
                             <div className="flex flex-col gap-1">
@@ -202,6 +204,7 @@ const Dashboard = () => {
                                         setIsRecentTransaction(false);
                                         setIsIncome(false);
                                         setIsAccountSummary(false);
+                                        setIsAllTransaction(false);
                                     }}
                                 >
                                     <IoMdAdd className="text-lg" /> add transaction
@@ -218,7 +221,7 @@ const Dashboard = () => {
                                 </button>
 
                                 <button 
-                                    className="dashboard-btn"
+                                    className={`dashboard-btn ${isRecentTransaction ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsRecentTransaction(true);
                                         setIsIncome(false);
@@ -233,7 +236,7 @@ const Dashboard = () => {
                                 </button>
 
                                 <button 
-                                    className="dashboard-btn"
+                                    className={`dashboard-btn ${isAllTransaction ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsAllTransaction(true);
                                         setIsRecentTransaction(false);
@@ -248,7 +251,7 @@ const Dashboard = () => {
                                 </button>
 
                                 <button 
-                                    className="dashboard-btn"
+                                    className={`dashboard-btn ${isIncome ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsIncome(true);
                                         setIsRecentTransaction(false);
@@ -263,7 +266,7 @@ const Dashboard = () => {
                                 </button>
 
                                 <button 
-                                    className="dashboard-btn"
+                                    className={`dashboard-btn ${isExpense ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsIncome(false);
                                         setIsRecentTransaction(false);
@@ -367,8 +370,8 @@ const Dashboard = () => {
                         isRecentTransaction &&
                         <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
                             <div className="flex justify-between px-4">
-                                <h2 className="capitalize font-semibold">
-                                    recent transactions
+                                <h2 className="capitalize font-semibold flex items-center gap-2">
+                                    recent <span className="hidden sm:block">transactions</span>
                                 </h2>
 
                                 <p className="flex gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
@@ -383,7 +386,7 @@ const Dashboard = () => {
                                         return (
                                             <div 
                                                 key={t?._id}
-                                                className="flex justify-between items-center py-5 border-t border-black/5 px-4"
+                                                className="flex justify-between gap-4 items-center py-5 border-t border-black/5 px-4"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <span className={`w-8 h-8 lg:h-10 lg:w-10 border border-black/20 ${t?.type === "income" ? "bg-green-400/10" : "bg-red-500/10"} flex items-center justify-center rounded-[50%]`}>
@@ -393,7 +396,7 @@ const Dashboard = () => {
                                                         }
                                                     </span>
                                                     <div>
-                                                        <p className="capitalize text-sm">{t?.description}</p>
+                                                        <p className="capitalize text-xs sm:text-sm">{t?.description}</p>
                                                         <p className="text-xs opacity-50">
                                                             {new Date(t?.date).toLocaleDateString("en-US", {
                                                                 year: "numeric",
@@ -405,7 +408,7 @@ const Dashboard = () => {
                                                 </div>
 
                                                 <div className="">
-                                                    <p className={`${t?.type === "income" ? "text-green-600" : "text-red-500"} font-medium` }>
+                                                    <p className={`${t?.type === "income" ? "text-green-600" : "text-red-500"} font-medium text-xs sm:text-sm` }>
                                                         <span>
                                                             {
                                                                 t?.type === "income" ? "+" : "-"
@@ -659,8 +662,81 @@ const Dashboard = () => {
 
                             </form>
                         </div>
+                    }
 
+                    {
+                        isAllTransaction && 
 
+                        <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
+                            <div className="w-full flex justify-between px-4">
+                                <h2 className="capitalize font-semibold flex items-center gap-2">
+                                    <span className="w-9 h-9 hidden sm:flex justify-center items-center border border-black/15 rounded-md bg-gray-200/50 animate-pulse">
+                                        <FaList className="text-lg opacity-70" />
+                                    </span>
+                                    transactions
+                                </h2>
+
+                                <p className="flex items-center gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
+                                    <span>{totalTransaction} </span>
+                                    <span>{totalTransaction === 1 ? "result" : "results"}</span>
+                                </p>
+                            </div>
+
+                            <div className="px-4 overflow-x-auto">
+                                <table className="w-full border border-black/20">
+                                    <thead className="">
+                                        <tr className="border border-black/15 bg-dark-col/70 text-white-col">
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">date</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">description</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">type</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">amount</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">actions</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody className="">
+                                        {
+                                            allTransactions.map(t => {
+                                                return(
+                                                    <tr key={t._id} className="">
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3 whitespace-nowrap">
+                                                            {new Date(t?.date).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric"
+                                                            })}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3">
+                                                            {t?.description}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3 capitalize">
+                                                            {t?.type}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3">
+                                                            {t?.amount.toLocaleString()}
+                                                        </td>
+
+                                                        <td className="flex gap-3 items-center justify-center px-2 border border-black/10 py-3">
+                                                            <button className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:brightness-110 font-medium cursor-pointer hover:shadow-md duration-200">
+                                                                <MdEdit />
+                                                                edit
+                                                            </button>
+
+                                                            <button className="bg-red-500/90 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:brightness-90 hover:shadow-md duration-150 active:translate-y-1">
+                                                                <MdDelete />
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     }
 
                 </div>
