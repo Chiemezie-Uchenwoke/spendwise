@@ -720,12 +720,12 @@ const Dashboard = () => {
                                                         </td>
 
                                                         <td className="flex gap-3 items-center justify-center px-2 border border-black/10 py-3">
-                                                            <button className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:brightness-110 font-medium cursor-pointer hover:shadow-md duration-200">
+                                                            <button className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:bg-blue-600/90 font-medium cursor-pointer hover:shadow-md duration-200">
                                                                 <MdEdit />
                                                                 edit
                                                             </button>
 
-                                                            <button className="bg-red-500/90 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:brightness-90 hover:shadow-md duration-150 active:translate-y-1">
+                                                            <button className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1">
                                                                 <MdDelete />
                                                             </button>
                                                         </td>
