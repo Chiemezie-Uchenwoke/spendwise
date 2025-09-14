@@ -8,7 +8,7 @@ const DesktopHeader = () => {
 
     return (
         <header 
-            className="hidden w-full h-[4rem] min-[1100px]:flex items-center border-b border-black/20"
+            className="hidden w-full h-[4rem] min-[1100px]:flex items-center border-b border-black/20 sticky top-0 bg-white-col"
         >
             <div className="container w-full flex justify-between items-center">
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>

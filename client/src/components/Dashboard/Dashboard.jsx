@@ -15,6 +15,7 @@ import { TbMoneybag } from "react-icons/tb";
 import { fetchAllTransactions } from "../../services/transaction";
 import TransactionModal from "../TransactionModal/TransactionModal";
 import getTransactionCategory from "../../services/category";
+import applyTransactionFilter from "../../services/applyFilter";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -38,6 +39,7 @@ const Dashboard = () => {
     const [isExpense, setIsExpense] = useState(false);
     const [isAllTransaction, setIsAllTransaction] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [isTransactionFilter, setIsTransactionFilter] = useState(false);
     const [filterForm, setFilterForm] = useState({
         startDate: "",
         endDate: "",
