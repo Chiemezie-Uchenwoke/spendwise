@@ -5,7 +5,7 @@ import { addTransaction } from "../../services/transaction";
 import Notification from "../Notification/Notification";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 
-const TransactionModal = ({isOpen, onCloseModal, mode="add"}) => {
+const TransactionModal = ({isOpen, onCloseModal}) => {
 
     const [notification, setNotification] = useState({
         message: "",
@@ -116,7 +116,7 @@ const TransactionModal = ({isOpen, onCloseModal, mode="add"}) => {
                     <h2
                         className="font-bold"
                     > 
-                        {mode === "add" ? "Add Transaction" : "Edit Transaction"} 
+                        Add Transaction 
                     </h2>
 
                     <button

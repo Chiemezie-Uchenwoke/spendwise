@@ -1,4 +1,5 @@
 import Transaction from "../models/transactionModel.js";
+import mongoose from "mongoose";
 
 const addTransaction = async (req, res, next) => {
     const {amount, type, categoryId, description, date} = req.body;
@@ -98,4 +99,32 @@ const deleteTransaction = async (req, res, next) => {
     }
 }
 
-export {addTransaction, fetchAllTransactions, editTransaction, deleteTransaction};
+const getSingleTransaction = async (req, res, next) => {
+    const {transactionId} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(transactionId)) {
+        return res.status(400).json({ message: "Invalid transaction ID." });
+    }
+
+    try {
+        const userId = req.user.userId;
+        const transaction = await Transaction.findOne({_id: transactionId, userId});
+
+        if (!transaction) {
+            return res.status(404).json({ 
+                success: false,
+                message: "Transaction not found or unauthorized." 
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            transaction
+        });
+    } catch(err){
+        console.error(err);
+        next(err);
+    }
+}
+
+export {addTransaction, fetchAllTransactions, editTransaction, deleteTransaction, getSingleTransaction};

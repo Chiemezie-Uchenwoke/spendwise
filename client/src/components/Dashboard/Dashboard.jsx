@@ -1,7 +1,7 @@
 import { MdDashboard, MdDelete, MdEdit } from "react-icons/md";
 import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket, FaFilter } from "react-icons/fa6";
 import { FaArrowDown, FaArrowUp, FaWallet, FaList } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { LuClock2 } from "react-icons/lu";
 import { IoSearch } from "react-icons/io5";
 import { TbReload } from "react-icons/tb";
@@ -16,6 +16,7 @@ import { fetchAllTransactions } from "../../services/transaction";
 import TransactionModal from "../TransactionModal/TransactionModal";
 import getTransactionCategory from "../../services/category";
 import applyTransactionFilter from "../../services/applyFilter";
+import getSingleTransaction from "../../services/getSingleTransaction";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -37,14 +38,23 @@ const Dashboard = () => {
     const [expenseTransaction, setExpenseTransaction] = useState([]);
     const [isIncome, setIsIncome] = useState(false);
     const [isExpense, setIsExpense] = useState(false);
-    const [isAllTransaction, setIsAllTransaction] = useState(false);
+    const [isAllTransaction, setIsAllTransaction] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [isFilter, setIsFilter] = useState(true);
     const [isTransactionFilter, setIsTransactionFilter] = useState(false);
     const [filterForm, setFilterForm] = useState({
         startDate: "",
         endDate: "",
         type: "",
         categoryId: ""
+    });
+    const [filteredTransactions, setFilteredTransactions] = useState([]); 
+    const [editFormData, setEditFormData] = useState({
+        amount: "",
+        type: "",
+        categoryId: "",
+        description: "",
+        date: ""
     });
 
     const {user, setUser, fetchAuthUser} = useAuth();
@@ -174,6 +184,75 @@ const Dashboard = () => {
             type: "",
             categoryId: ""
         });
+        setIsAllTransaction(true);
+        setIsTransactionFilter(false);
+    }
+
+    const handleFilterTransaction = async (e) => {
+        e.preventDefault();
+
+        if (!filterForm.startDate && !filterForm.endDate && !filterForm.type && !filterForm.categoryId) {
+            return setNotification({
+                message: "Please select at least one filter option",
+                type: "info"
+            });
+        }
+
+        try {
+            const filteredTransactions = await applyTransactionFilter(filterForm.startDate, filterForm.endDate, filterForm.type, filterForm.categoryId);
+
+            if (filteredTransactions.success){
+                setFilteredTransactions(filteredTransactions.result);
+                setIsTransactionFilter(true);
+                setIsAllTransaction(false);
+            } else {
+                setNotification({ message: filteredTransactions.message || "No results found", type: "error" });
+            }
+        } catch (err){
+            console.error(err);
+            setNotification({ message: "Network error. Please try again.", type: "error" });
+        }
+    }
+
+    const handleShowEditModal = () => {
+        setIsEditing(true);
+        setIsTransactionModalOpen(false);
+        setIsRecentTransaction(false);
+        setIsIncome(false);
+        setIsAccountSummary(false);
+        setIsAllTransaction(false);
+        setIsFilter(false);
+        setIsTransactionFilter(false);
+    }
+
+    const handleHideEditModal = () => {
+        setIsEditing(false);
+        setIsTransactionModalOpen(false);
+        setIsRecentTransaction(false);
+        setIsIncome(false);
+        setIsAccountSummary(false);
+        setIsAllTransaction(true);
+        setIsFilter(true);
+        setIsTransactionFilter(false);
+    }
+
+    const handleTransactionEdit = async (id) => {
+        handleShowEditModal();
+
+        const getUserTransaction = await getSingleTransaction(id);
+        
+        if (getUserTransaction?.transaction){
+            setEditFormData({
+                ...editFormData, 
+                amount: getUserTransaction.transaction.amount,
+                type: getUserTransaction.transaction.type,
+                categoryId: getUserTransaction.transaction.categoryId,
+                description: getUserTransaction.transaction.description,
+                date: new Date(getUserTransaction.transaction.date).toISOString().split("T")[0]
+            });
+        } else {
+            console.warn("Transaction not found");
+        }
     }
 
     return (
@@ -207,6 +286,8 @@ const Dashboard = () => {
                                         setIsIncome(false);
                                         setIsAccountSummary(false);
                                         setIsAllTransaction(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
                                     }}
                                 >
                                     <IoMdAdd className="text-lg" /> add transaction
@@ -231,6 +312,8 @@ const Dashboard = () => {
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
                                         setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
                                     }}
                                 >
                                     <LuClock2 />
@@ -246,6 +329,8 @@ const Dashboard = () => {
                                         setIsExpense(false);
                                         setIsAccountSummary(false);
                                         setIsTransactionModalOpen(false);
+                                        setIsFilter(true);
+                                        setIsTransactionFilter(false);
                                     }}
                                 >
                                     <FaArrowTrendUp />
@@ -261,6 +346,8 @@ const Dashboard = () => {
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
                                         setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
                                     }}
                                 >
                                     <FaArrowDown />
@@ -276,6 +363,8 @@ const Dashboard = () => {
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
                                         setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
                                     }}
                                 >
                                     <FaArrowUp />
@@ -348,6 +437,8 @@ const Dashboard = () => {
                                     setIsIncome(false);
                                     setIsAccountSummary(false);
                                     setIsAllTransaction(false);
+                                    setIsFilter(false);
+                                    setIsTransactionFilter(false);
                                 }}
                             >
                                 <IoMdAdd className="text-lg" /> add transaction
@@ -356,13 +447,14 @@ const Dashboard = () => {
                     }
 
                     <TransactionModal 
-                        mode={isEditing ? "edit" : "add"}
                         isOpen={isTransactionModalOpen}
                         onCloseModal={() => {
                             setIsTransactionModalOpen(false);
                             setIsRecentTransaction(true);
                             setIsAccountSummary(true);
                             setIsAllTransaction(false);
+                            setIsFilter(false);
+                            setIsTransactionFilter(false);
                             handleTransactions();
                         }}
                     />
@@ -550,7 +642,7 @@ const Dashboard = () => {
 
                     {/* all transaction */}
                     {
-                        isAllTransaction && 
+                        isFilter && 
                         <div className="bg-white/70 p-4 flex flex-col gap-4 border border-black/20 rounded-md w-full">
                             <h2 className="flex items-center-safe gap-2 capitalize font-semibold text-base">
                                 <span className="w-10 h-10 bg-pri-col rounded-md flex justify-center items-center"> <FaFilter className="text-white-col" /> </span>
@@ -559,6 +651,7 @@ const Dashboard = () => {
 
                             <form 
                                 className="w-full flex flex-col gap-6 sm:gap-4"
+                                onSubmit={handleFilterTransaction}
                             >
                                 <div className="w-full flex flex-col sm:flex-row gap-4">
                                     <div className="w-full sm:w-1/2 flex flex-col gap-1">
@@ -722,7 +815,10 @@ const Dashboard = () => {
                                                         </td>
 
                                                         <td className="flex gap-3 items-center justify-center px-2 border border-black/10 py-3">
-                                                            <button className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:bg-blue-600/90 font-medium cursor-pointer hover:shadow-md duration-200">
+                                                            <button 
+                                                                className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:bg-blue-600/90 font-medium cursor-pointer hover:shadow-md duration-200"
+                                                                onClick={() => handleTransactionEdit(t?._id)}
+                                                            >
                                                                 <MdEdit />
                                                                 edit
                                                             </button>
@@ -738,6 +834,181 @@ const Dashboard = () => {
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    }
+
+                    {
+                        isTransactionFilter && 
+
+                        <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
+                            <div className="w-full flex justify-between px-4">
+                                <h2 className="capitalize font-semibold flex items-center gap-2">
+                                    <span className="w-9 h-9 hidden sm:flex justify-center items-center border border-black/15 rounded-md bg-gray-200/50 animate-pulse">
+                                        <FaList className="text-lg opacity-70" />
+                                    </span>
+                                    transactions
+                                </h2>
+
+                                <p className="flex items-center gap-2 bg-pri-col/5 py-1 px-3 rounded-md text-sm text-black/60">
+                                    <span>{filteredTransactions.length} </span>
+                                    <span>{filteredTransactions.length === 1 ? "result" : "results"}</span>
+                                </p>
+                            </div>
+
+                            <div className="px-4 overflow-x-auto">
+                                <table className="w-full border border-black/20">
+                                    <thead className="">
+                                        <tr className="border border-black/15 bg-dark-col/70 text-white-col">
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">date</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">description</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">type</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">amount</th>
+                                            <th className="capitalize text-xs sm:text-sm py-3 border border-white/20">actions</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody className="">
+                                        {
+                                            filteredTransactions.map(t => {
+                                                return(
+                                                    <tr key={t._id} className="">
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3 whitespace-nowrap">
+                                                            {new Date(t?.date).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric"
+                                                            })}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3">
+                                                            {t?.description}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3 capitalize">
+                                                            {t?.type}
+                                                        </td>
+
+                                                        <td className="text-xs sm:text-sm px-2 border border-black/20 py-3">
+                                                            {t?.amount.toLocaleString()}
+                                                        </td>
+
+                                                        <td className="flex gap-3 items-center justify-center px-2 border border-black/10 py-3">
+                                                            <button 
+                                                                className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:bg-blue-600/90 font-medium cursor-pointer hover:shadow-md duration-200"
+                                                                onClick={handleTransactionEdit}
+                                                            >
+                                                                <MdEdit />
+                                                                edit
+                                                            </button>
+
+                                                            <button className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1">
+                                                                <MdDelete />
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+
+                    {
+                        isEditing && 
+                        <div className="w-full h-full py-8 px-4 bg-dark-col/10 absolute left-0 top-0 flex justify-center items-center overflow-y-auto z-10">
+                            <form 
+                                className="bg-white/70 w-full max-w-[35rem] h-[95%] mx-auto py-8 px-4 shadow-lg rounded-md flex flex-col gap-6 overflow-y-auto"
+                            >
+                                <div className="flex justify-between gap-4">
+                                    <h2 className="font-bold">Edit Transaction</h2>
+
+                                    <button     
+                                        className="border border-black/20 p-1.5 rounded bg-gray-200/50 cursor-pointer hover:bg-gray-200 duration-200"
+                                        onClick={handleHideEditModal}
+                                    >
+                                        <IoMdClose />
+                                    </button>
+                                </div> 
+
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="amount" className="capitalize font-medium text-sm">amount</label>
+                                    <input 
+                                        type="number" 
+                                        id="amount" 
+                                        className="border border-black/20 rounded-md px-2 h-10" 
+                                        value={editFormData.amount}
+                                        onChange={(e) => setEditFormData({...editFormData, amount: e.target.value})}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="type" className="capitalize font-medium text-sm">type</label>
+                                    <select 
+                                        name="type" 
+                                        id="type"
+                                        value={editFormData.type}
+                                        onChange={(e) => setEditFormData({...editFormData, type: e.target.value})}
+                                        className="border border-black/30 px-2 h-10 rounded-md outline-0"
+                                    >
+                                        <option value="">Select</option>
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="categoryId" className="capitalize font-medium text-sm">category</label>
+                                    <select 
+                                        name="categoryId" 
+                                        id="categoryId"
+                                        value={editFormData.categoryId}
+                                        onChange={(e) => setEditFormData({...editFormData, categoryId: e.target.value})}
+                                        className="border border-black/30 px-2 h-10 rounded-md outline-0"
+                                    >
+                                        <option value="">Select</option>
+                                        {
+                                            categories.filter(c => c.type === editFormData.type)
+                                            .map(catg => {
+                                                return (
+                                                    <option key={catg?._id} className="outline-0" value={catg?._id}>
+                                                        {catg?.name}
+                                                    </option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="description" className="capitalize font-medium text-sm">description</label>
+                                    <input 
+                                        type="text" 
+                                        id="description" 
+                                        className="border border-black/20 rounded-md px-2 h-10" 
+                                        value={editFormData.description}
+                                        onChange={(e) => setEditFormData({...editFormData, description: e.target.value})}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <label htmlFor="date" className="capitalize font-medium text-sm">date</label>
+                                    <input 
+                                        type="date" 
+                                        id="date" 
+                                        className="border border-black/20 rounded-md px-2 h-10" 
+                                        value={editFormData.date}
+                                        onChange={(e) => setEditFormData({...editFormData, date: e.target.value})}
+                                    />
+                                </div>
+
+                                <button 
+                                    className="bg-pri-col/90 text-white py-2 rounded-md cursor-pointer hover:bg-pri-col font-medium capitalize duration-200"
+                                >
+                                    save
+                                </button>
+                            </form>
                         </div>
                     }
 
