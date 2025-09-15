@@ -1,25 +1,8 @@
-import { useEffect, useState } from "react";
 import spendwiseLogo from "../../assets/spendwise.png";
 import { useAuth } from "../../hooks/useAuth";
 
 const DashboardHeaderLg = () => {
-
-    const [userImage, setUserImage] = useState(null);
-    const {user, fetchProfileImage} = useAuth();
-
-    
-
-    useEffect(() => {
-
-        const fetchUserImage = async () => {
-            const imageUrl = await fetchProfileImage();
-            
-            setUserImage(imageUrl);
-        };
-
-        if (user) fetchUserImage();
-
-    }, [user, fetchProfileImage]);
+    const {user, profileImage} = useAuth();
 
     return (
         <header className="border-b h-[4rem] border-black/20 bg-white/70 hidden min-[1000px]:flex items-center sticky top-0 z-50">
@@ -39,9 +22,9 @@ const DashboardHeaderLg = () => {
 
                     <div className="w-10 h-10 border border-black/30 rounded-[50%] overflow-hidden bg-pri-col/50 flex items-center justify-center">
                         {
-                            userImage ? 
+                            profileImage ? 
                             <img 
-                                src={userImage} 
+                                src={profileImage} 
                                 alt="User image" 
                                 className="w-full h-full object-cover"
                             /> 

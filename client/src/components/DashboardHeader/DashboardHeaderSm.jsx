@@ -1,24 +1,10 @@
-import { useState, useEffect } from "react";
 import { HiOutlineMenu } from "react-icons/hi";
 import { useAuth } from "../../hooks/useAuth";
 import { useToggle } from "../../hooks/useToggle";
 
 const DashboardHeaderSm = () => {
-    const [userImage, setUserImage] = useState(null);
-    const {user, fetchProfileImage} = useAuth();
+    const {user, profileImage} = useAuth();
     const {setIsSidebarOpen} = useToggle();
-
-    useEffect(() => {
-    
-        const fetchUserImage = async () => {
-            const imageUrl = await fetchProfileImage();
-            
-            setUserImage(imageUrl);
-        };
-
-        if (user) fetchUserImage();
-    
-    }, [user, fetchProfileImage]);
 
     const handleToggle = () => {
         setIsSidebarOpen((prev) => !prev);
@@ -44,9 +30,9 @@ const DashboardHeaderSm = () => {
                 className="w-8 h-8 border border-black/30 rounded-[50%] overflow-hidden bg-pri-col/50 flex items-center justify-center"
             >
                 {
-                    userImage ? 
+                    profileImage ? 
                     <img 
-                        src={userImage} 
+                        src={profileImage} 
                         alt="User image" 
                         className="w-full h-full object-cover"
                     /> 

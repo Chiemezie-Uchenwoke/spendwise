@@ -7,7 +7,7 @@ import { IoSearch } from "react-icons/io5";
 import { TbReload } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Notification from "../Notification/Notification";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 import { useToggle } from "../../hooks/useToggle";
@@ -19,6 +19,7 @@ import applyTransactionFilter from "../../services/applyFilter";
 import getSingleTransaction from "../../services/getSingleTransaction";
 import handleEditTransaction from "../../services/editTransaction";
 import deleteTransaction from "../../services/deleteTransaction";
+import uploadProfileImage from "../../services/uploadImage";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -59,8 +60,12 @@ const Dashboard = () => {
         description: "",
         date: ""
     });
+    const [isProfileImage, setIsProfileImage] = useState(false);
+    const [file, setFile] = useState(null);
+    const fileInputRef = useRef(null);
+    
 
-    const {user, setUser, fetchAuthUser} = useAuth();
+    const {user, setUser, fetchAuthUser, fetchProfileImage, setProfileImage} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
     const {isSidebarOpen} = useToggle();
@@ -88,37 +93,40 @@ const Dashboard = () => {
     const handleTransactions = async () => {
         try {
             const result = await fetchAllTransactions();
-            if (result.success){
-                const allTransaction = [...result.userTransactions].reverse();
-                const recentTransactions = allTransaction.slice(0, 10);
-                setTansactions(recentTransactions);
-                setAllTansactions(allTransaction);
+            if (!result.success) return;
 
-                const incomeArray = allTransaction.filter(t => t.type === "income");
-                const income = incomeArray.map(income => Number(income.amount));
-                const totalIncome = income.reduce((acc, value) => acc + value, 0);
-                setIncomeTransaction(incomeArray);
-                setTotalIncome(totalIncome);
+            const allTransaction = [...result.userTransactions].reverse();
 
-                const expenseArray = allTransaction.filter(t => t.type === "expense");
-                const expense = expenseArray.map(expense => Number(expense.amount));
-                const totalExpense = expense.reduce((acc, value) => acc + value, 0);
-                setExpenseTransaction(expenseArray);
-                setTotalExpense(totalExpense);
-                
-                const balance = totalIncome - totalExpense;
-                setBalance(balance);
+            let totalIncome = 0;
+            let totalExpense = 0;
+            const incomeArray = [];
+            const expenseArray = [];
 
-                const totalTransaction = allTransaction.length;
-                setTotalTransaction(totalTransaction);
-                
-            }
-        } catch (err){
+            allTransaction.forEach(t => {
+                const amount = Number(t.amount);
+                if (t.type === "income") {
+                    totalIncome += amount;
+                    incomeArray.push(t);
+                } else if (t.type === "expense") {
+                    totalExpense += amount;
+                    expenseArray.push(t);
+                }
+            });
+
+            setAllTansactions(allTransaction);
+            setTansactions(allTransaction.slice(0, 10));
+            setIncomeTransaction(incomeArray);
+            setExpenseTransaction(expenseArray);
+            setTotalIncome(totalIncome);
+            setTotalExpense(totalExpense);
+            setBalance(totalIncome - totalExpense);
+            setTotalTransaction(allTransaction.length);
+
+        } catch (err) {
             console.error(err);
-            return null;
         }
+    };
 
-    }
      
     useEffect(() => {
         handleTransactions();
@@ -297,6 +305,32 @@ const Dashboard = () => {
         }
     }
 
+    const handleFileUpload = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await uploadProfileImage(file);
+
+            if (result.success){
+                setNotification({
+                    message: result.message,
+                    type: "success"
+                });
+
+                setFile(null);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+
+                const newImageUrl = await fetchProfileImage();
+                if (newImageUrl) {
+                    setProfileImage(newImageUrl);
+                }
+            }
+        } catch(err){
+            console.error(err);
+        }
+    }
+
     return (
         <div className="w-full h-[calc(100vh-3.8rem)] min-[1000px]:h-[calc(100vh-4rem)] relative ">
             <Notification 
@@ -330,6 +364,7 @@ const Dashboard = () => {
                                         setIsAllTransaction(false);
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
                                     }}
                                 >
                                     <IoMdAdd className="text-lg" /> add transaction
@@ -340,7 +375,20 @@ const Dashboard = () => {
                                     dashboard
                                 </h4>
 
-                                <button className="dashboard-btn">
+                                <button 
+                                    className={`dashboard-btn ${isProfileImage ? "bg-gray-200/80" : "bg-white/70"}`}
+                                    onClick={() => {
+                                        setIsRecentTransaction(false);
+                                        setIsIncome(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(false);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
+                                        setIsProfileImage(true);
+                                    }}
+                                >
                                     <FaUpload />
                                     add profile image
                                 </button>
@@ -356,6 +404,7 @@ const Dashboard = () => {
                                         setIsTransactionModalOpen(false);
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
                                     }}
                                 >
                                     <LuClock2 />
@@ -373,6 +422,7 @@ const Dashboard = () => {
                                         setIsTransactionModalOpen(false);
                                         setIsFilter(true);
                                         setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
                                     }}
                                 >
                                     <FaArrowTrendUp />
@@ -390,6 +440,7 @@ const Dashboard = () => {
                                         setIsTransactionModalOpen(false);
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
                                     }}
                                 >
                                     <FaArrowDown />
@@ -407,6 +458,7 @@ const Dashboard = () => {
                                         setIsTransactionModalOpen(false);
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
                                     }}
                                 >
                                     <FaArrowUp />
@@ -481,6 +533,7 @@ const Dashboard = () => {
                                     setIsAllTransaction(false);
                                     setIsFilter(false);
                                     setIsTransactionFilter(false);
+                                    setIsProfileImage(false);
                                 }}
                             >
                                 <IoMdAdd className="text-lg" /> add transaction
@@ -498,6 +551,7 @@ const Dashboard = () => {
                             setIsFilter(false);
                             setIsTransactionFilter(false);
                             handleTransactions();
+                            setIsProfileImage(false);
                         }}
                     />
 
@@ -1057,6 +1111,33 @@ const Dashboard = () => {
                                     type="submit"
                                 >
                                     save
+                                </button>
+                            </form>
+                        </div>
+                    }
+
+                    {
+                        isProfileImage && 
+                        <div className="w-full h-full py-8 px-4 bg-white/70 flex justify-center items-center">
+                            <form 
+                                className="border border-black/20 py-8 px-4 rounded-md flex flex-col gap-10 w-full max-w-[35rem] mx-auto"
+                                encType="multipart/form-data"
+                                onSubmit={handleFileUpload}
+                            >
+                                <h2 className="font-medium text-sm capitalize">Upload profile image</h2>
+                                <input 
+                                    type="file" 
+                                    ref={fileInputRef}
+                                    name="profileImage"
+                                    className="text-sm border border-black/20 rounded-md h-10 py-1 px-3 cursor-pointer" 
+                                    onChange={(e) => setFile(e.target.files[0])} 
+                                />
+
+                                <button 
+                                    type="submit"
+                                    className="text-sm font-medium cursor-pointer bg-pri-col inline-block w-full text-white-col py-3 rounded-md hover:bg-pri-col/90 duration-200"
+                                >
+                                    Upload
                                 </button>
                             </form>
                         </div>

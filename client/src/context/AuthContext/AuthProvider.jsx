@@ -9,6 +9,7 @@ const API_BASE = "http://localhost:3000";
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
   const refreshUserToken = useRefreshUserToken();
 
@@ -77,16 +78,32 @@ const AuthProvider = ({ children }) => {
       }
 
         const data = await response.json();
-        return data.success ? data.imageUrl : null;
+        
+        if (data.success) {
+            setProfileImage(data.imageUrl);   
+            return data.imageUrl;
+        } else {
+            setProfileImage(null);           
+            return null;
+        }
     } catch (err) {
         console.error("Error fetching profile image:", err);
+        setProfileImage(null);
         return null;
     }
   } ,[refreshUserToken, navigate]);
 
     useEffect(() => {
-        fetchAuthUser();
-    }, [fetchAuthUser]);
+        const loadData = async () => {
+            const authUser = await fetchAuthUser();
+
+            if (authUser) {
+                await fetchProfileImage(); // this will repopulate profileImage
+            }
+        };
+        loadData();
+    }, [fetchAuthUser, fetchProfileImage]);
+
 
     return (
         <AuthContext.Provider
@@ -96,6 +113,8 @@ const AuthProvider = ({ children }) => {
             loading,
             fetchAuthUser,
             fetchProfileImage,
+            profileImage,        
+            setProfileImage, 
         }}
         >
         {children}
