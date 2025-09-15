@@ -17,6 +17,7 @@ import TransactionModal from "../TransactionModal/TransactionModal";
 import getTransactionCategory from "../../services/category";
 import applyTransactionFilter from "../../services/applyFilter";
 import getSingleTransaction from "../../services/getSingleTransaction";
+import handleEditTransaction from "../../services/editTransaction";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -38,9 +39,9 @@ const Dashboard = () => {
     const [expenseTransaction, setExpenseTransaction] = useState([]);
     const [isIncome, setIsIncome] = useState(false);
     const [isExpense, setIsExpense] = useState(false);
-    const [isAllTransaction, setIsAllTransaction] = useState(true);
+    const [isAllTransaction, setIsAllTransaction] = useState(false);
     const [categories, setCategories] = useState([]);
-    const [isFilter, setIsFilter] = useState(true);
+    const [isFilter, setIsFilter] = useState(false);
     const [isTransactionFilter, setIsTransactionFilter] = useState(false);
     const [filterForm, setFilterForm] = useState({
         startDate: "",
@@ -50,6 +51,7 @@ const Dashboard = () => {
     });
     const [filteredTransactions, setFilteredTransactions] = useState([]); 
     const [editFormData, setEditFormData] = useState({
+        _id: "",
         amount: "",
         type: "",
         categoryId: "",
@@ -86,7 +88,7 @@ const Dashboard = () => {
         try {
             const result = await fetchAllTransactions();
             if (result.success){
-                const allTransaction = result.userTransactions.reverse();
+                const allTransaction = [...result.userTransactions].reverse();
                 const recentTransactions = allTransaction.slice(0, 10);
                 setTansactions(recentTransactions);
                 setAllTansactions(allTransaction);
@@ -244,6 +246,7 @@ const Dashboard = () => {
         if (getUserTransaction?.transaction){
             setEditFormData({
                 ...editFormData, 
+                _id: getUserTransaction.transaction._id,
                 amount: getUserTransaction.transaction.amount,
                 type: getUserTransaction.transaction.type,
                 categoryId: getUserTransaction.transaction.categoryId,
@@ -252,6 +255,26 @@ const Dashboard = () => {
             });
         } else {
             console.warn("Transaction not found");
+        }
+    }
+
+    const handleEditFormSubmission = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await handleEditTransaction(editFormData._id, editFormData);
+
+            if (result.success){
+                setNotification({
+                    message: result.message,
+                    type: "success"
+                });
+
+                handleHideEditModal();
+                await handleTransactions();
+
+            }
+        } catch(err){
+            console.error(err);
         }
     }
 
@@ -895,7 +918,7 @@ const Dashboard = () => {
                                                         <td className="flex gap-3 items-center justify-center px-2 border border-black/10 py-3">
                                                             <button 
                                                                 className="text-xs sm:text-sm flex items-center gap-2 bg-blue-500/90 text-white py-2 px-4 rounded-xl capitalize hover:bg-blue-600/90 font-medium cursor-pointer hover:shadow-md duration-200"
-                                                                onClick={handleTransactionEdit}
+                                                                onClick={() => handleTransactionEdit(t?._id)}
                                                             >
                                                                 <MdEdit />
                                                                 edit
@@ -920,6 +943,7 @@ const Dashboard = () => {
                         <div className="w-full h-full py-8 px-4 bg-dark-col/10 absolute left-0 top-0 flex justify-center items-center overflow-y-auto z-10">
                             <form 
                                 className="bg-white/70 w-full max-w-[35rem] h-[95%] mx-auto py-8 px-4 shadow-lg rounded-md flex flex-col gap-6 overflow-y-auto"
+                                onSubmit={handleEditFormSubmission}
                             >
                                 <div className="flex justify-between gap-4">
                                     <h2 className="font-bold">Edit Transaction</h2>
@@ -1005,6 +1029,7 @@ const Dashboard = () => {
 
                                 <button 
                                     className="bg-pri-col/90 text-white py-2 rounded-md cursor-pointer hover:bg-pri-col font-medium capitalize duration-200"
+                                    type="submit"
                                 >
                                     save
                                 </button>
