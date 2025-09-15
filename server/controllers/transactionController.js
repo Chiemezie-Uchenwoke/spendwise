@@ -1,5 +1,4 @@
 import Transaction from "../models/transactionModel.js";
-import mongoose from "mongoose";
 
 const addTransaction = async (req, res, next) => {
     const {amount, type, categoryId, description, date} = req.body;
@@ -101,10 +100,6 @@ const deleteTransaction = async (req, res, next) => {
 
 const getSingleTransaction = async (req, res, next) => {
     const {transactionId} = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(transactionId)) {
-        return res.status(400).json({ message: "Invalid transaction ID." });
-    }
 
     try {
         const userId = req.user.userId;

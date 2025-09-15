@@ -8,8 +8,9 @@ const transactionRouter = express.Router();
 transactionRouter.post("/", authenticateUser, addTransaction);
 transactionRouter.get("/", authenticateUser, fetchAllTransactions);
 transactionRouter.get("/filter", authenticateUser, filterTransactions);
-transactionRouter.get("/:transactionId", authenticateUser, getSingleTransaction);
-transactionRouter.put("/:transactionId", authenticateUser, editTransaction);
 transactionRouter.delete("/:transactionId", authenticateUser, deleteTransaction);
+transactionRouter.put("/:transactionId", authenticateUser, editTransaction);
+transactionRouter.get("/:transactionId", authenticateUser, getSingleTransaction);
+
 
 export default transactionRouter;

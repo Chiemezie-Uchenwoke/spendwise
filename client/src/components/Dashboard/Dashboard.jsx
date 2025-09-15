@@ -18,6 +18,7 @@ import getTransactionCategory from "../../services/category";
 import applyTransactionFilter from "../../services/applyFilter";
 import getSingleTransaction from "../../services/getSingleTransaction";
 import handleEditTransaction from "../../services/editTransaction";
+import deleteTransaction from "../../services/deleteTransaction";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -272,6 +273,24 @@ const Dashboard = () => {
                 handleHideEditModal();
                 await handleTransactions();
 
+            }
+        } catch(err){
+            console.error(err);
+        }
+    }
+
+    const handleDeleteTransaction = async (id) => {
+        try {
+            const result = await deleteTransaction(id);
+            console.log(result);
+
+            if (result.success){
+                setNotification({
+                    message: result.message,
+                    type: "success"
+                });
+
+                await handleTransactions();
             }
         } catch(err){
             console.error(err);
@@ -846,7 +865,10 @@ const Dashboard = () => {
                                                                 edit
                                                             </button>
 
-                                                            <button className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1">
+                                                            <button 
+                                                                className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1"
+                                                                onClick={() => handleDeleteTransaction(t?._id)}
+                                                            >
                                                                 <MdDelete />
                                                             </button>
                                                         </td>
@@ -924,7 +946,10 @@ const Dashboard = () => {
                                                                 edit
                                                             </button>
 
-                                                            <button className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1">
+                                                            <button 
+                                                                className="bg-red-400 text-white-col px-4 py-2 rounded-xl cursor-pointer hover:bg-red-500 hover:shadow-md duration-150 active:translate-y-1"
+                                                                onClick={() => handleDeleteTransaction(t?._id)}
+                                                            >
                                                                 <MdDelete />
                                                             </button>
                                                         </td>
