@@ -62,7 +62,7 @@ const editTransaction = async (req, res, next) => {
 
         await Transaction.findOneAndUpdate(
             {_id: transactionId, userId}, 
-            {amount, type, categoryId, description, date}
+            {amount: Number(amount), type, categoryId, description, date}
         );
 
         return res.status(200).json({

@@ -93,39 +93,40 @@ const Dashboard = () => {
     const handleTransactions = async () => {
         try {
             const result = await fetchAllTransactions();
-            if (!result.success) return;
+            if (result.success) {
+                // ✅ copy before reversing
+                const allTransaction = [...result.userTransactions].reverse();
+                
+                // recent 10
+                const recentTransactions = allTransaction.slice(0, 10);
+                setTansactions(recentTransactions);
+                setAllTansactions(allTransaction);
 
-            const allTransaction = [...result.userTransactions].reverse();
+                // ✅ income
+                const incomeArray = allTransaction.filter(t => t.type === "income");
+                const totalIncome = incomeArray.reduce((acc, t) => acc + Number(t.amount), 0);
+                setIncomeTransaction(incomeArray);
+                setTotalIncome(totalIncome);
 
-            let totalIncome = 0;
-            let totalExpense = 0;
-            const incomeArray = [];
-            const expenseArray = [];
+                // ✅ expense
+                const expenseArray = allTransaction.filter(t => t.type === "expense");
+                const totalExpense = expenseArray.reduce((acc, t) => acc + Number(t.amount), 0);
+                setExpenseTransaction(expenseArray);
+                setTotalExpense(totalExpense);
 
-            allTransaction.forEach(t => {
-                const amount = Number(t.amount);
-                if (t.type === "income") {
-                    totalIncome += amount;
-                    incomeArray.push(t);
-                } else if (t.type === "expense") {
-                    totalExpense += amount;
-                    expenseArray.push(t);
-                }
-            });
+                // ✅ balance
+                const balance = totalIncome - totalExpense;
+                setBalance(balance);
 
-            setAllTansactions(allTransaction);
-            setTansactions(allTransaction.slice(0, 10));
-            setIncomeTransaction(incomeArray);
-            setExpenseTransaction(expenseArray);
-            setTotalIncome(totalIncome);
-            setTotalExpense(totalExpense);
-            setBalance(totalIncome - totalExpense);
-            setTotalTransaction(allTransaction.length);
-
+                // ✅ total count
+                setTotalTransaction(allTransaction.length);
+            }
         } catch (err) {
             console.error(err);
+            return null;
         }
     };
+
 
      
     useEffect(() => {
@@ -1120,7 +1121,7 @@ const Dashboard = () => {
                         isProfileImage && 
                         <div className="w-full h-full py-8 px-4 bg-white/70 flex justify-center items-center">
                             <form 
-                                className="border border-black/20 py-8 px-4 rounded-md flex flex-col gap-10 w-full max-w-[35rem] mx-auto"
+                                className="border border-black/20 py-8 px-4 rounded-md flex flex-col gap-10 w-full max-w-[35rem] mx-auto shadow-lg"
                                 encType="multipart/form-data"
                                 onSubmit={handleFileUpload}
                             >
