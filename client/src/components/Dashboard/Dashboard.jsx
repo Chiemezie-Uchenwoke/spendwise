@@ -3,7 +3,7 @@ import { FaUpload, FaArrowTrendUp, FaArrowRightFromBracket, FaFilter } from "rea
 import { FaArrowDown, FaArrowUp, FaWallet, FaList } from "react-icons/fa";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { LuClock2 } from "react-icons/lu";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoBarChartSharp } from "react-icons/io5";
 import { TbReload } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
@@ -20,6 +20,8 @@ import getSingleTransaction from "../../services/getSingleTransaction";
 import handleEditTransaction from "../../services/editTransaction";
 import deleteTransaction from "../../services/deleteTransaction";
 import uploadProfileImage from "../../services/uploadImage";
+import ShowChart from "../ShowChart/ShowChart";
+import IncomeExpensePie from "../IncomeExpensePie/IncomeExpensePie";
 
 const Dashboard = () => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -61,6 +63,7 @@ const Dashboard = () => {
         date: ""
     });
     const [isProfileImage, setIsProfileImage] = useState(false);
+    const [isChartDisplayed, setIsChartDisplayed] = useState(false);
     const [file, setFile] = useState(null);
     const fileInputRef = useRef(null);
     
@@ -138,37 +141,43 @@ const Dashboard = () => {
         try {
             const apiUrl = "http://localhost:3000/auth/logout";
             const response = await fetch(apiUrl, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                }
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
             });
 
-            if (response.ok){
-                setNotification({
-                    message: "Log Out Successful!",
-                    type: "success"
-                })
-                
-                setTimeout(() => {
-                    finalizeLogout();
-                }, 3000);
-            } else {
-                console.error("Logout failed");
-                setNotification({
-                    message: "Couldn't log out",
-                    type: "error"
-                });
-            }
-        } catch (err){
-            console.error(err);
-            setNotification({message: "Network error. Please check your connection and try again.", type: "error"});
+            if (response.ok || response.status === 401) {
+            // 👈 handle 401 same as success
+            setNotification({
+                message: "Log Out Successful!",
+                type: "success"
+            });
 
+            setTimeout(() => {
+                finalizeLogout(); // clears tokens, user state, redirects
+            }, 1500);
+            } else {
+            console.error("Logout failed");
+            setNotification({
+                message: "Couldn't log out",
+                type: "error"
+            });
+            }
+        } catch (err) {
+            console.error(err);
+            setNotification({
+            message: "Network error. Please try again.",
+            type: "error"
+            });
+            // still force cleanup if you want
+            finalizeLogout();
         } finally {
             setLoggingOut(false);
         }
-    }
+    };
+
 
     const fetchCategory = async () => {
         try {
@@ -366,6 +375,7 @@ const Dashboard = () => {
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <IoMdAdd className="text-lg" /> add transaction
@@ -388,6 +398,7 @@ const Dashboard = () => {
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(true);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <FaUpload />
@@ -406,6 +417,7 @@ const Dashboard = () => {
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <LuClock2 />
@@ -424,6 +436,7 @@ const Dashboard = () => {
                                         setIsFilter(true);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <FaArrowTrendUp />
@@ -442,6 +455,7 @@ const Dashboard = () => {
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <FaArrowDown />
@@ -460,10 +474,30 @@ const Dashboard = () => {
                                         setIsFilter(false);
                                         setIsTransactionFilter(false);
                                         setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
                                     }}
                                 >
                                     <FaArrowUp />
                                     expense
+                                </button>
+
+                                <button 
+                                    className={`dashboard-btn ${isChartDisplayed ? "bg-gray-200/80" : "bg-white/70"}`}
+                                    onClick={() => {
+                                        setIsIncome(false);
+                                        setIsRecentTransaction(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(true);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
+                                        setIsChartDisplayed(true);
+                                    }}
+                                >
+                                    <IoBarChartSharp />
+                                    charts
                                 </button>
                             </div>
                         </div>
@@ -535,6 +569,7 @@ const Dashboard = () => {
                                     setIsFilter(false);
                                     setIsTransactionFilter(false);
                                     setIsProfileImage(false);
+                                    setIsChartDisplayed(false);
                                 }}
                             >
                                 <IoMdAdd className="text-lg" /> add transaction
@@ -553,6 +588,7 @@ const Dashboard = () => {
                             setIsTransactionFilter(false);
                             handleTransactions();
                             setIsProfileImage(false);
+                            setIsChartDisplayed(false);
                         }}
                     />
 
@@ -1115,6 +1151,14 @@ const Dashboard = () => {
                                 </button>
                             </form>
                         </div>
+                    }
+
+                    {
+                        isChartDisplayed &&
+                        <IncomeExpensePie  
+                            income={totalIncome}
+                            expense={totalExpense}
+                        />
                     }
 
                     {
