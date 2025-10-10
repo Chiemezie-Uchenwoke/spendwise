@@ -1,11 +1,11 @@
 const getTransactionCategory = async () => {
     try {
-        const url = "http://localhost:3000/categories/";
+        const url = "http://server:3000/categories/";
         const response = await fetch(url, {
             credentials: "include"
         });
 
-        const data = response.json();
+        const data = await response.json();
         return data;
 
     } catch(err){

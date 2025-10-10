@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from 'mongoose';
+import helmet from "helmet";
 import dotenv from "dotenv";
 import { authRouter } from "./routes/authRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -27,10 +28,17 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "http://localhost",
-    "https://spendwise-nu.vercel.app/"
+    "https://spendwise-nu.vercel.app"
   ],
   credentials: true
 }));
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+  })
+);
+
 app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

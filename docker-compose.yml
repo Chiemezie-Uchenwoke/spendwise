@@ -10,10 +10,10 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
       - SPENDWISE_DB_URL=${SPENDWISE_DB_URL}
       - SESSION_SECRET=${SESSION_SECRET}
-      - FRONTEND_ORIGIN=http://localhost:5173
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN}
     depends_on:
       - mongo
     volumes:
