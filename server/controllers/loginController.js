@@ -37,14 +37,14 @@ const logInUser = async (req, res, next) => {
                 res.cookie("accessToken", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "lax",
+                    sameSite: "none",  //none for production
                     maxAge: 1000 * 60 * 15, // 15 mins
                 });
 
                 res.cookie("refreshToken", refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "lax",
+                    sameSite: "none",
                     maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
                 });
 
