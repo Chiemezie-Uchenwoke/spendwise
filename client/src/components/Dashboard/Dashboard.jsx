@@ -139,7 +139,7 @@ const Dashboard = () => {
     const handleLogout = async () => {
         setLoggingOut(true);
         try {
-            const apiUrl = "http://localhost:3000/auth/logout";
+            const apiUrl = "https://spendwise-backend-48nv.onrender.com/auth/logout";
             const response = await fetch(apiUrl, {
             method: "POST",
             credentials: "include",

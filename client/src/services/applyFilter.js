@@ -1,5 +1,5 @@
 const applyTransactionFilter = async (startDate, endDate, type, categoryId) => {
-    const apiUrl = `http://localhost:3000/transactions/filter?startDate=${startDate}&endDate=${endDate}&type=${type}&categoryId=${categoryId}`;
+    const apiUrl = `https://spendwise-backend-48nv.onrender.com/transactions/filter?startDate=${startDate}&endDate=${endDate}&type=${type}&categoryId=${categoryId}`;
 
     try {
         const response = await fetch(apiUrl, {credentials: "include"});

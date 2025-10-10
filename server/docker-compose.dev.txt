@@ -2,7 +2,10 @@ version: "3.8"
 
 services:
   server:
-    image: chiemezie/spendwise-backend:prod
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: spendwise-server
     ports:
       - "3000:3000"
     environment:
@@ -17,7 +20,10 @@ services:
       - ./server:/usr/src/app
 
   client:
-    image: chiemezie/spendwise-frontend:prod
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: spendwise-client
     ports:
       - "5173:80"
     depends_on:

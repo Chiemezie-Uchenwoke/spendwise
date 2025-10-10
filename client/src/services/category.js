@@ -1,6 +1,6 @@
 const getTransactionCategory = async () => {
     try {
-        const url = "http://server:3000/categories/";
+        const url = "https://spendwise-backend-48nv.onrender.com/categories/";
         const response = await fetch(url, {
             credentials: "include"
         });

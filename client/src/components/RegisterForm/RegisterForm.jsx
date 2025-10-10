@@ -22,7 +22,7 @@ const RegisterForm = () => {
         setLoading(true);
         
         try {
-            const url = "http://localhost:3000/auth/register"
+            const url = "https://spendwise-backend-48nv.onrender.com/auth/register"
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

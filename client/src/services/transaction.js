@@ -1,5 +1,5 @@
 const fetchAllTransactions = async () => {
-    const url = "http://localhost:3000/transactions/";
+    const url = "https://spendwise-backend-48nv.onrender.com/transactions/";
 
     try {
         const response = await fetch(url, {

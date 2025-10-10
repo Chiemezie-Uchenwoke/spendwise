@@ -3,7 +3,7 @@ import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
 import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://spendwise-backend-48nv.onrender.com";
 
 
 const AuthProvider = ({ children }) => {

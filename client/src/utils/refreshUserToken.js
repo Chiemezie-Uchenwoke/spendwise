@@ -1,6 +1,6 @@
 const refreshToken = async () => {
 
-    const api_base = "http://localhost:3000";
+    const api_base = "https://spendwise-backend-48nv.onrender.com";
 
     try {
         const response = await fetch(`${api_base}/auth/refresh`, {

@@ -1,5 +1,5 @@
 const handleEditTransaction = async (id, formData) => {
-    const url = `http://localhost:3000/transactions/${id}`;
+    const url = `https://spendwise-backend-48nv.onrender.com/transactions/${id}`;
     try {
         const response = await fetch(url, {
             method: "PUT",

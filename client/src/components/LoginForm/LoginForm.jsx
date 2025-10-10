@@ -25,7 +25,7 @@ const LoginForm = () => {
         setLoading(true);
         
         try {
-            const url = "http://localhost:3000/auth/login";
+            const url = "https://spendwise-backend-48nv.onrender.com/auth/login";
 
             const response = await fetch(url, {
                 method: "POST",

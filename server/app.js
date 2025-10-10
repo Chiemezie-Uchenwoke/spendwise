@@ -13,11 +13,17 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { insertSeedCategories } from "./seed/seedCategories.js";
 
 dotenv.config();
 
 const dbUrl = process.env.SPENDWISE_DB_URL;
-mongoose.connect(dbUrl).then(() => console.log("Database is running"));
+mongoose.connect(dbUrl).then(async () => {
+  console.log("Database is running")
+
+  // Auto seed categories if not already present
+  await insertSeedCategories();
+});
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -50,7 +56,7 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production', // secure only in prod (HTTPS)
     httpOnly: true,
-    // sameSite: process.env.NODE_ENV === "none", 
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
 }));

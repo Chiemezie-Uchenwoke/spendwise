@@ -1,5 +1,5 @@
 const uploadProfileImage = async (file) => {
-    const apiUrl = "http://localhost:3000/profile/upload";
+    const apiUrl = "https://spendwise-backend-48nv.onrender.com/profile/upload";
 
     const formData = new FormData();
     formData.append("profileImage", file); // "profileImage" must match your backend field name
