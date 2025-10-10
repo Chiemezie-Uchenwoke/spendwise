@@ -16,7 +16,7 @@ const fetchAllTransactions = async () => {
 }
 
 const addTransaction = async (formData) => {
-    const url = "http://localhost:3000/transactions/";
+    const url = "https://spendwise-backend-48nv.onrender.com/transactions/";
     try {
         const response = await fetch(url, {
             method: "POST",
