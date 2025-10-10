@@ -11,8 +11,11 @@ RUN npm ci --omit=dev
 # 4. Copy source code
 COPY . .
 
-# 5. Expose backend port
+# 5. Create uploads directory (if needed)
+RUN mkdir -p uploads/profiles
+
+# 6. Expose backend port
 EXPOSE 3000
 
-# 6. Start the app
+# 7. Start the app
 CMD ["node", "app.js"]

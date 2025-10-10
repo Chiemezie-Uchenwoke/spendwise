@@ -11,7 +11,9 @@ const uploadProfileImage = async (req, res, next) => {
             return res.status(400).json({success: false, message: "No file uploaded"});
         }
 
-        const filename = req.file.filename;
+        //dev
+        // const filename = req.file.filename; 
+        const imageUrl = req.file.path;
 
         // check if profile already exist
         const profile = await Profile.findOne({userId});
@@ -19,10 +21,10 @@ const uploadProfileImage = async (req, res, next) => {
         if (profile){
             //update existing profile
            await Profile.updateOne({userId}, {
-                profileImage: filename
+                profileImage: imageUrl
             });
         } else {
-            await Profile.create({userId, profileImage: filename});
+            await Profile.create({userId, profileImage: imageUrl});
         }
 
         return res.status(200).json({
@@ -49,7 +51,8 @@ const getUserProfileImage = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
-            imageUrl: `${process.env.SERVER_BASE_URL}/uploads/profiles/${profile.profileImage}`
+            imageUrl: profile.profileImage
+            // imageUrl: `${process.env.SERVER_BASE_URL}/uploads/profiles/${profile.profileImage}`
         });
 
     } catch(err){
