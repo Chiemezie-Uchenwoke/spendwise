@@ -1,7 +1,9 @@
+import { fetchWithAuth } from "../utils/fetchWithAuth";
+
 const handleEditTransaction = async (id, formData) => {
     const url = `https://spendwise-backend-48nv.onrender.com/transactions/${id}`;
     try {
-        const response = await fetch(url, {
+        const response = await fetchWithAuth(url, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -9,8 +11,11 @@ const handleEditTransaction = async (id, formData) => {
             },
             body: JSON.stringify(formData)
         });
+
         const data = await response.json();
+
         return data;
+        
     } catch (err){
         console.error(err);
         return null;

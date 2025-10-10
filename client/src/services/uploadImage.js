@@ -1,3 +1,5 @@
+import { fetchWithAuth } from "../utils/fetchWithAuth";
+
 const uploadProfileImage = async (file) => {
     const apiUrl = "https://spendwise-backend-48nv.onrender.com/profile/upload";
 
@@ -5,9 +7,8 @@ const uploadProfileImage = async (file) => {
     formData.append("profileImage", file); // "profileImage" must match your backend field name
 
     try {
-        const response = await fetch(apiUrl, {
+        const response = await fetchWithAuth(apiUrl, {
             method: "POST",
-            credentials: "include",
             body: formData
         });
         const data = await response.json();

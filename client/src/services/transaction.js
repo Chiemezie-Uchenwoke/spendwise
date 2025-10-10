@@ -1,9 +1,11 @@
+import { fetchWithAuth } from "../utils/fetchWithAuth";
+
 const fetchAllTransactions = async () => {
     const url = "https://spendwise-backend-48nv.onrender.com/transactions/";
 
     try {
-        const response = await fetch(url, {
-            credentials: "include"
+        const response = await fetchWithAuth(url, {
+            method: "GET"
         });
 
         const data = await response.json();
@@ -18,9 +20,8 @@ const fetchAllTransactions = async () => {
 const addTransaction = async (formData) => {
     const url = "https://spendwise-backend-48nv.onrender.com/transactions/";
     try {
-        const response = await fetch(url, {
+        const response = await fetchWithAuth(url, {
             method: "POST",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },

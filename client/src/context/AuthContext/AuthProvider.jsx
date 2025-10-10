@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   // const refreshUserToken = useRefreshUserToken(); // still here in case needed
 
-  // 🧠 Fetch authenticated user
+  // Fetch authenticated user
   const fetchAuthUser = useCallback(async () => {
     try {
       const response = await fetchWithAuth(`${API_BASE}/auth/me`, {
@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
     }
   }, [navigate]);
 
-  // 🧠 Fetch profile image
+  // Fetch profile image
   const fetchProfileImage = useCallback(async () => {
     try {
       const response = await fetchWithAuth(`${API_BASE}/profile/me`, {
@@ -72,16 +72,34 @@ const AuthProvider = ({ children }) => {
     }
   }, [navigate]);
 
-  // 🔁 Initial load
-  useEffect(() => {
+ // 🔁 Initial load + token check
+    useEffect(() => {
     const loadData = async () => {
-      const authUser = await fetchAuthUser();
-      if (authUser) {
+        const authUser = await fetchAuthUser();
+
+        if (authUser) {
         await fetchProfileImage();
-      }
+        } else {
+        
+        setUser(null);
+        navigate("/login", { replace: true });
+        }
     };
+
     loadData();
-  }, [fetchAuthUser, fetchProfileImage]);
+
+    }, [fetchAuthUser, fetchProfileImage, setUser, navigate]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchAuthUser();
+        }, 10 * 60 * 1000); // every 10 minutes
+
+        return () => clearInterval(interval);
+        
+    }, [fetchAuthUser]);
+
+
 
   return (
     <AuthContext.Provider
