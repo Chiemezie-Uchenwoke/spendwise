@@ -356,7 +356,7 @@ const Dashboard = () => {
                         <div className="flex flex-col gap-8">   
                             <div className="flex flex-col gap-1">
                                 <h2 className="font-bold text-sm">Welcome</h2>
-                                <p className="text-sm capitalize">
+                                <p className="text-xs capitalize">
                                     {
                                         user ? user?.username : null
                                     }
