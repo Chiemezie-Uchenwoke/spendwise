@@ -8,7 +8,7 @@ const handleRefreshToken = (req, res) => {
     if (!refreshToken) {
         return res.status(401).json({
             success: false,
-            message: "No refresh token provided"
+            message: "No refresh token provided. Please log in again to continue."
         });
     }
 
@@ -25,7 +25,7 @@ const handleRefreshToken = (req, res) => {
         res.cookie("accessToken", newToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: "none", //lax for dev
             maxAge: 1000 * 60 * 15,
         });
 
@@ -38,7 +38,7 @@ const handleRefreshToken = (req, res) => {
         console.error(err);
         return res.status(403).json({ 
             success: false,
-            message: "Invalid or expired refresh token" 
+            message: "Your session has expired. Please log in again to continue." 
         });
     }
 }

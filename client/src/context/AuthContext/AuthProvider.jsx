@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
-// import useRefreshUserToken from "../../hooks/useRefreshUserToken";
 import { fetchWithAuth } from "../../utils/fetchWithAuth";
 
 const API_BASE = "https://spendwise-backend-48nv.onrender.com";
@@ -11,7 +10,17 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
-  // const refreshUserToken = useRefreshUserToken(); // still here in case needed
+
+  // Handle refresh token expiration globally
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      setUser(null);
+      navigate("/login", { replace: true });
+    };
+
+    window.addEventListener("auth-expired", handleAuthExpired);
+    return () => window.removeEventListener("auth-expired", handleAuthExpired);
+  }, [navigate]);
 
   // Fetch authenticated user
   const fetchAuthUser = useCallback(async () => {
@@ -20,21 +29,19 @@ const AuthProvider = ({ children }) => {
         method: "GET",
       });
 
-      if (!response) {
+      if (!response || !response.ok) {
         setUser(null);
-        navigate("/login");
         return null;
       }
 
       const data = await response.json();
-
       if (data.success) {
         setUser(data.user);
         return data.user;
-      } else {
-        setUser(null);
-        return null;
       }
+
+      setUser(null);
+      return null;
     } catch (err) {
       console.error("Error fetching auth user:", err);
       setUser(null);
@@ -42,7 +49,7 @@ const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, []);
 
   // Fetch profile image
   const fetchProfileImage = useCallback(async () => {
@@ -51,55 +58,31 @@ const AuthProvider = ({ children }) => {
         method: "GET",
       });
 
-      if (!response) {
-        navigate("/login");
+      if (!response || !response.ok) {
+        setProfileImage(null);
         return null;
       }
 
       const data = await response.json();
-
       if (data.success) {
         setProfileImage(data.imageUrl);
-        return data.imageUrl;
       } else {
         setProfileImage(null);
-        return null;
       }
     } catch (err) {
       console.error("Error fetching profile image:", err);
       setProfileImage(null);
-      return null;
     }
-  }, [navigate]);
+  }, []);
 
- // 🔁 Initial load + token check
-    useEffect(() => {
+  // Load user on mount
+  useEffect(() => {
     const loadData = async () => {
-        const authUser = await fetchAuthUser();
-
-        if (authUser) {
-        await fetchProfileImage();
-        } else {
-        
-        setUser(null);
-        navigate("/login", { replace: true });
-        }
+      const authUser = await fetchAuthUser();
+      if (authUser) await fetchProfileImage();
     };
-
     loadData();
-
-    }, [fetchAuthUser, fetchProfileImage, setUser, navigate]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            fetchAuthUser();
-        }, 10 * 60 * 1000); // every 10 minutes
-
-        return () => clearInterval(interval);
-        
-    }, [fetchAuthUser]);
-
-
+  }, [fetchAuthUser, fetchProfileImage]);
 
   return (
     <AuthContext.Provider
