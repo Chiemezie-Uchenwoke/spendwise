@@ -71,7 +71,7 @@ const Dashboard = () => {
     const {user, setUser, fetchAuthUser, fetchProfileImage, setProfileImage} = useAuth();
     const navigate = useNavigate();
     const refreshUserToken = useRefreshUserToken();
-    const {isSidebarOpen} = useToggle();
+    const {isSidebarOpen, setIsSidebarOpen} = useToggle();
 
     useEffect(() => {
         const tryRefresh = async () => {
@@ -352,7 +352,9 @@ const Dashboard = () => {
             <div className="w-full h-full flex gap-4">
                 <aside 
                     className={`w-[65%] max-w-[15rem] min-[900px]:w-[25%] h-full ${isSidebarOpen ? "flex" : "hidden"} shadow-lg min-[900px]:shadow-none absolute left-0 top-0 min-[900px]:static min-[900px]:border-r border-black/20 min-[900px]:flex flex-col justify-between p-3 z-20 bg-white-col min-[900px]:bg-white/70 overflow-y-auto`}
-                    >
+
+                    onClick={() => setIsSidebarOpen((prev) => !prev)}
+                >
                         <div className="flex flex-col gap-8">   
                             <div className="flex flex-col gap-1">
                                 <h2 className="font-bold text-sm">Welcome</h2>
