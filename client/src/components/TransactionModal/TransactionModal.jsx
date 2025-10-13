@@ -211,7 +211,7 @@ const TransactionModal = ({isOpen, onCloseModal}) => {
 
                     <button 
                         type="submit" 
-                        className="bg-pri-col/90 hover:bg-pri-col duration-300 text-white-col py-2 rounded-md cursor-pointer capitalize font-semibold text-base"
+                        className="bg-pri-col/90 hover:bg-pri-col duration-300 text-white-col py-2 rounded-md cursor-pointer capitalize font-semibold text-base active:scale-95"
                     >
                         submit
                     </button>

@@ -1143,7 +1143,7 @@ const Dashboard = () => {
                                 </div>
 
                                 <button 
-                                    className="bg-pri-col/90 text-white py-2 rounded-md cursor-pointer hover:bg-pri-col font-medium capitalize duration-200"
+                                    className="bg-pri-col/90 text-white py-2 rounded-md cursor-pointer hover:bg-pri-col font-medium capitalize duration-200 active:scale-95"
                                     type="submit"
                                 >
                                     save
