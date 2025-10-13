@@ -35,7 +35,7 @@ const Dashboard = () => {
     const [isAccountSummary, setIsAccountSummary] = useState(true);
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [isRecentTransaction, setIsRecentTransaction] = useState(true);
+    const [isDashboard, setIsDashboard] = useState(true);
     const [totalTransaction, setTotalTransaction] = useState(0);
     const [transactions, setTansactions] = useState([]);
     const [allTransactions, setAllTansactions] = useState([]);
@@ -238,7 +238,7 @@ const Dashboard = () => {
     const handleShowEditModal = () => {
         setIsEditing(true);
         setIsTransactionModalOpen(false);
-        setIsRecentTransaction(false);
+        setIsDashboard(false);
         setIsIncome(false);
         setIsAccountSummary(false);
         setIsAllTransaction(false);
@@ -249,7 +249,7 @@ const Dashboard = () => {
     const handleHideEditModal = () => {
         setIsEditing(false);
         setIsTransactionModalOpen(false);
-        setIsRecentTransaction(false);
+        setIsDashboard(false);
         setIsIncome(false);
         setIsAccountSummary(false);
         setIsAllTransaction(true);
@@ -370,8 +370,9 @@ const Dashboard = () => {
                                     className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex items-center gap-2 justify-center"
                                     onClick={() => {
                                         setIsTransactionModalOpen(true);
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsIncome(false);
+                                        setIsExpense(false);
                                         setIsAccountSummary(false);
                                         setIsAllTransaction(false);
                                         setIsFilter(false);
@@ -383,15 +384,29 @@ const Dashboard = () => {
                                     <IoMdAdd className="text-lg" /> add transaction
                                 </button>
 
-                                <h4 className="text-sm capitalize flex items-center gap-2 text-pri-col bg-pri-col/10 py-2 px-4 rounded-md text-center select-none">
-                                    <MdDashboard className="text-pri-col" /> 
-                                    dashboard
-                                </h4>
+                                <button 
+                                    className={`dashboard-btn ${isDashboard ? "bg-gray-200/80" : "bg-white/70"}`}
+                                    onClick={() => {
+                                        setIsDashboard(true);
+                                        setIsIncome(false);
+                                        setIsExpense(false);
+                                        setIsAccountSummary(true);
+                                        setIsAllTransaction(false);
+                                        setIsTransactionModalOpen(false);
+                                        setIsFilter(false);
+                                        setIsTransactionFilter(false);
+                                        setIsProfileImage(false);
+                                        setIsChartDisplayed(false);
+                                    }}
+                                >
+                                    <MdDashboard />
+                                    dashboard 
+                                </button>
 
                                 <button 
                                     className={`dashboard-btn ${isProfileImage ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsIncome(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(false);
@@ -408,29 +423,10 @@ const Dashboard = () => {
                                 </button>
 
                                 <button 
-                                    className={`dashboard-btn ${isRecentTransaction ? "bg-gray-200/80" : "bg-white/70"}`}
-                                    onClick={() => {
-                                        setIsRecentTransaction(true);
-                                        setIsIncome(false);
-                                        setIsExpense(false);
-                                        setIsAccountSummary(true);
-                                        setIsAllTransaction(false);
-                                        setIsTransactionModalOpen(false);
-                                        setIsFilter(false);
-                                        setIsTransactionFilter(false);
-                                        setIsProfileImage(false);
-                                        setIsChartDisplayed(false);
-                                    }}
-                                >
-                                    <LuClock2 />
-                                    recent 
-                                </button>
-
-                                <button 
                                     className={`dashboard-btn ${isAllTransaction ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsAllTransaction(true);
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsIncome(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(false);
@@ -449,7 +445,7 @@ const Dashboard = () => {
                                     className={`dashboard-btn ${isIncome ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsIncome(true);
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
@@ -468,7 +464,7 @@ const Dashboard = () => {
                                     className={`dashboard-btn ${isExpense ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsIncome(false);
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsExpense(true);
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
@@ -487,7 +483,7 @@ const Dashboard = () => {
                                     className={`dashboard-btn ${isChartDisplayed ? "bg-gray-200/80" : "bg-white/70"}`}
                                     onClick={() => {
                                         setIsIncome(false);
-                                        setIsRecentTransaction(false);
+                                        setIsDashboard(false);
                                         setIsExpense(false);
                                         setIsAccountSummary(true);
                                         setIsAllTransaction(false);
@@ -564,8 +560,9 @@ const Dashboard = () => {
                                 className="text-sm capitalize cursor-pointer bg-pri-col text-white-col py-2 px-4 rounded-md hover:brightness-95 flex md:hidden items-center gap-2 justify-center"
                                 onClick={() => {
                                     setIsTransactionModalOpen(true);
-                                    setIsRecentTransaction(false);
+                                    setIsDashboard(false);
                                     setIsIncome(false);
+                                    setIsExpense(false);
                                     setIsAccountSummary(false);
                                     setIsAllTransaction(false);
                                     setIsFilter(false);
@@ -583,7 +580,7 @@ const Dashboard = () => {
                         isOpen={isTransactionModalOpen}
                         onCloseModal={() => {
                             setIsTransactionModalOpen(false);
-                            setIsRecentTransaction(true);
+                            setIsDashboard(true);
                             setIsAccountSummary(true);
                             setIsAllTransaction(false);
                             setIsFilter(false);
@@ -596,7 +593,7 @@ const Dashboard = () => {
 
                     {/* recent transaction */}
                     {
-                        isRecentTransaction &&
+                        isDashboard &&
                         <div className="w-full flex flex-col gap-3 bg-white/70 py-4 rounded-md border border-black/10">
                             <div className="flex justify-between px-4">
                                 <h2 className="capitalize font-semibold flex items-center gap-2">
