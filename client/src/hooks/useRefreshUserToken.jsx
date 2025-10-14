@@ -9,7 +9,7 @@ const useRefreshUserToken = () => {
         const result = await refreshToken();
 
         if (result.status === 401 || result.status === 403) {
-            navigate("/login");
+            navigate("/login", {replace: true});
             return { success: false, error: 'Authentication failed' };
         }
 

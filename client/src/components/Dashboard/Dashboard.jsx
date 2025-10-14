@@ -90,7 +90,7 @@ const Dashboard = () => {
 
     const finalizeLogout = () => {
         setUser(null);
-        navigate("/login");
+        navigate("/login", {replace: true});
     };
 
     const handleTransactions = async () => {

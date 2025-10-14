@@ -54,7 +54,7 @@ const LoginForm = () => {
                 const user = await fetchAuthUser();
                     if (user) {
                         setTimeout(() => {
-                        navigate("/dashboard");
+                        navigate("/dashboard", {replace: true});
                     }, 3000);
                 }
 
