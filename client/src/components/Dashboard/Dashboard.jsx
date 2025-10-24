@@ -923,7 +923,7 @@ const Dashboard = () => {
 
                                     <tbody className="">
                                         {
-                                            allTransactions.map(t => {
+                                            allTransactions.slice(0, 15).map(t => {
                                                 return(
                                                     <tr key={t._id} className="">
                                                         <td className="text-xs sm:text-sm px-2 border border-black/20 py-3 whitespace-nowrap">
