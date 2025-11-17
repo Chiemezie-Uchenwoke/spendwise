@@ -4,6 +4,8 @@ import { FaTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
+    const currentYear = new Date().getFullYear();
+
     return (
         <footer className="bg-sec-col pt-16">
             <div className="container flex flex-col gap-6">
@@ -57,8 +59,8 @@ const Footer = () => {
                 </div>
 
                 <div className="py-6 flex flex-col md:flex-row md:justify-between gap-4 border-t border-white-col/10">
-                    <p className="text-white-col/50 font-medium text-sm">© 2024 SpendWise. All rights reserved.</p>
-                    <a href="https://chiemezie-uchenwoke.vercel.app/" className="text-white-col/50 font-medium hover:text-acc-col text-sm" target="_blank">Website developed by Chiemezie Uchenwoke</a>
+                    <p className="text-white-col/50 font-medium text-sm">© {currentYear} SpendWise. All rights reserved.</p>
+                    <a href="https://chiemezie-uche.vercel.app/" className="text-white-col/50 font-medium hover:text-acc-col text-sm" target="_blank">Website developed by Chiemezie Uchenwoke</a>
                 </div>
             </div>
         </footer>
